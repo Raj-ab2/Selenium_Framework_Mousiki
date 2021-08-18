@@ -45,5 +45,7 @@ public class SignInPage {
 	
 	public void clicksigninlink() {
 		TestBase.click(driver, signinlink, signinlinknm);
+		
+		TestBase.waitforelementvisible(driver, 30, emailtxt);
 	}
 }

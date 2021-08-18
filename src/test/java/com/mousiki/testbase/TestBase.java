@@ -15,6 +15,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
 import com.relevantcodes.extentreports.ExtentReports;
@@ -27,7 +29,7 @@ public class TestBase {
 	/**
 	 * configuration of browsers
 	 * all reusable methods
-	 * reuable utilities
+	 * reusable utilities
 	 * property readers
 	 * XML Readers
 	 */
@@ -55,12 +57,39 @@ public class TestBase {
 	}
 	
 	public void invoke() throws IOException {
-		properties();
 		System.out.println("browser name=" + prop.getProperty("browsername"));
-//		invokeBrowser(prop.getProperty("browsername"));
-		invokeBrowser("chrome");
+		invokeBrowser(prop.getProperty("browsername"));
 		driver.get(prop.getProperty("URL"));
 		driver.manage().window().maximize();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void invokeBrowser(String browser) {
+		if(prop.getProperty("OsName").contains("Win")) {
+			if(browser.contains("chrome")) {
+				WebDriverManager.chromedriver().setup();
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--incognito");
+				DesiredCapabilities cap = new DesiredCapabilities().chrome();
+				cap.setCapability(ChromeOptions.CAPABILITY, options);
+				
+				driver = new ChromeDriver(cap);
+				
+			}else if(browser.contains("firefox")) {
+				WebDriverManager.firefoxdriver().setup();
+				FirefoxOptions fp = new FirefoxOptions();
+				String path = "";
+				fp.setBinary(path);
+				driver = new FirefoxDriver(fp);
+				
+			}else {
+				
+			}
+		}else if(prop.getProperty("OsName").contains("mac")) {
+			if(browser.contains("safari")) {
+				
+			}
+		}
 	}
 	
 	public static void click(WebDriver driver, By ElementLocator, String name) {
@@ -88,33 +117,9 @@ public class TestBase {
 			test.log(LogStatus.PASS, "To verify " + name + " is visible or editable in the provided time",  "An exception occured while enter for element " + name);
 		}
 	}
-	@SuppressWarnings("deprecation")
-	public void invokeBrowser(String browser) {
-		//if(prop.getProperty("OsName").contains("win")) {
-			if(browser.contains("chrome")) {
-				WebDriverManager.chromedriver().setup();
-				ChromeOptions options = new ChromeOptions();
-				options.addArguments("--incognito");
-				DesiredCapabilities cap = new DesiredCapabilities().chrome();
-				cap.setCapability(ChromeOptions.CAPABILITY, options);
-				
-				driver = new ChromeDriver(cap);
-				
-			}else if(browser.contains("firefox")) {
-				WebDriverManager.firefoxdriver().setup();
-				FirefoxOptions fp = new FirefoxOptions();
-				String path = "";
-				fp.setBinary(path);
-				driver = new FirefoxDriver(fp);
-				
-			}else {
-				
-			}
-		/*}else if(prop.getProperty("OsName").contains("mac")) {
-			if(browser.contains("safari")) {
-				
-			}
-		}*/
-		
+	
+	public static void waitforelementvisible(WebDriver driver, int timeout, By ElementLocator) {
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementLocator));
 	}
 }

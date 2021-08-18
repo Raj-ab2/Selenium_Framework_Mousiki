@@ -21,19 +21,19 @@ public class Login extends TestBase{
 	}
 	
 	@Test
-	public void AppLogin() throws InterruptedException {
-		test = extent.startTest("TC01_test");
+	@Parameters ({"emailid", "password"})
+	public void AppLogin(String emailid, String password) throws InterruptedException {
+		test = extent.startTest("TC01_Login");
 		System.out.println("Successfully launched browser");
 		
 		signinpage.clicksigninlink();
-		Thread.sleep(10000);
 		
 		String title = signinpage.getTitle();
 		Assert.assertEquals(title, "Mousiki.io - Collaboration App for Music Learning Community.");
 		
-		signinpage.enterusername("TestUser");
+		signinpage.enterusername(emailid);
 		
-		signinpage.enterpassword("TestPassword");
+		signinpage.enterpassword(password);
 		
 		signinpage.clickloginbutton();
 		
