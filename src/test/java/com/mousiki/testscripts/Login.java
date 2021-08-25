@@ -7,7 +7,7 @@ import org.testng.annotations.*;
 
 import com.mousiki.pages.SignInPage;
 import com.mousiki.testbase.TestBase;
-import com.relevantcodes.extentreports.LogStatus;
+//import com.relevantcodes.extentreports.LogStatus;
 
 public class Login extends TestBase{
 
@@ -22,27 +22,37 @@ public class Login extends TestBase{
 	
 	@Test
 	@Parameters ({"emailid", "password"})
-	public void AppLogin(String emailid, String password) throws InterruptedException {
-		test = extent.startTest("TC01_Login");
-		System.out.println("Successfully launched browser");
+	public void AppLogin(String emailid, String password) throws Throwable {
+		test = extent.createTest("TC01_Login");
 		
+		//click signin link
 		signinpage.clicksigninlink();
 		
-		String title = signinpage.getTitle();
-		Assert.assertEquals(title, "Mousiki.io - Collaboration App for Music Learning Community.");
+		//check signin URL
+		String signinurl = signinpage.getcurrentURL();
+		if(signinurl.equalsIgnoreCase(signinpage.getexpectedsigninurl())) {
+			reportlog("navigated to signin page successfully", "INFO");
+		}else {
+			reportlog("failed to navigate sign in page. expected url is not matching:" + signinpage.getexpectedsigninurl(), "FAIL", "Signin navigation");
+		}
 		
-		signinpage.enterusername(emailid);
-		
+		//Enter email id, password and click login button
+		signinpage.enterusername(emailid);		
 		signinpage.enterpassword(password);
-		
 		signinpage.clickloginbutton();
 		
+		//handle confirm timezone dialog
+		if(signinpage.checkconfirmtimezonedialog()) {
+			signinpage.closeconfirmtimezonedialog();
+		}
+		
+		reportlog("Login completed sucessfully", "PASS", "Login");
 	}
 	
 	@AfterClass
 	public void closebrowser() {
 		extent.flush();
-		extent.endTest(test);
+//		extent.endTest(test);
 		driver.close();
 	}
 	

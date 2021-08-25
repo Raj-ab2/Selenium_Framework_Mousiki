@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="mousiki Testng Suite">
+<suite thread-count="1" verbose="1" name="mousiki UI Testng Suite" annotations="JDK" parallel="classes">
   <test name="TC01_Login">
-      <parameter name="emailid" value="tester456@gmail.com"/>
-      <parameter name="password" value="test@123"/>
+      <parameter name="emailid" value="iadmin@mousiki.us"/>
+      <parameter name="password" value="Test@123"/>
       <classes>
       <class name="com.mousiki.testscripts.Login"/>
       </classes>

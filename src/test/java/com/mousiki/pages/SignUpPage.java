@@ -6,7 +6,15 @@ import org.openqa.selenium.WebDriver;
 import com.mousiki.testbase.TestBase;
 
 public class SignUpPage {
+	/*signup page webelements
+	 * signup page webelement names
+	 * functionality on webelements
+	 * */
+	
+	//declare webdriver variable
 	WebDriver driver;
+	
+	//signup webelements
 	By signuplink = By.xpath("//a[contains(.,'Sign Up')]");
 	By imparentlink = By.xpath("//a[contains(.,'Parent')]");
 	By imteacherlink = By.xpath("//a[contains(.,'Teacher')]");
@@ -46,51 +54,51 @@ public class SignUpPage {
 		return driver.getCurrentUrl();
 	}
 	
-	public void enterfirstname(String firstname) {
+	public void enterfirstname(String firstname) throws Throwable {
 		TestBase.entertext(driver, firstnametxt, firstname, firstnametxtnm);
 	}
 	
-	public void enterlastname(String lastname) {
+	public void enterlastname(String lastname) throws Throwable {
 		TestBase.entertext(driver, lastnametxt, lastname, lastnametxtnm);
 	}
 	
-	public void enteremailid(String emailid) {
+	public void enteremailid(String emailid) throws Throwable {
 		TestBase.entertext(driver, emailtxt, emailid, emailtxtnm);
 	}
 	
-	public void enterpassword(String password) {
+	public void enterpassword(String password) throws Throwable {
 		TestBase.entertext(driver, passwordtxt, password, passwordtxtnm);
 	}
 	
-	public void clicksignup() {
+	public void clicksignup() throws Throwable {
 		TestBase.click(driver, signuplink, signuplinknm);
 		
 		TestBase.waitforelementvisible(driver, 30, imstudentlink);
 	}
 	
-	public void clickregister() {
+	public void clickregister() throws Throwable {
 		TestBase.click(driver, registerbtn, registerbtnnm);
 	}
 	
-	public void clickimparent() {
+	public void clickimparent() throws Throwable {
 		TestBase.click(driver, imparentlink, imparentlinknm);
 		
 		TestBase.waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
-	public void clickimstudent() {
+	public void clickimstudent() throws Throwable {
 		TestBase.click(driver, imstudentlink, imstudentlinknm);
 		
 		TestBase.waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
-	public void clickimteacher() {
+	public void clickimteacher() throws Throwable {
 		TestBase.click(driver, imteacherlink, imteacherlinknm);
 		
 		TestBase.waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
-	public void clickwearemusicschool() {
+	public void clickwearemusicschool() throws Throwable {
 		TestBase.click(driver, wermusicschoollink, wermusicschoollinknm);
 		
 		TestBase.waitforelementvisible(driver, 30, firstnametxt);

@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import com.mousiki.pages.SignUpPage;
 import com.mousiki.testbase.TestBase;
+//import com.relevantcodes.extentreports.LogStatus;
 
 public class Register extends TestBase {
 	SignUpPage signuppage;
@@ -23,8 +24,8 @@ public class Register extends TestBase {
 	
 	@Test
 	@Parameters ({"registeroption", "firstname", "lastname", "emailid", "password"})
-	public void AppLogin(String registeroption, String firstname, String lastname, String emailid, String password) throws InterruptedException {
-		test = extent.startTest("TC02_Register");
+	public void AppLogin(String registeroption, String firstname, String lastname, String emailid, String password) throws Throwable {
+		test = extent.createTest("TC02_Register");
 		System.out.println("Successfully launched browser");
 		
 		signuppage.clicksignup();
@@ -45,12 +46,15 @@ public class Register extends TestBase {
 		signuppage.enterpassword(password);
 		
 		signuppage.clickregister();
+		
+		test.pass("Registration completed sucessfully");
+		test.addScreenCaptureFromPath(takescreenshot(), "Registration");		
 	}
 	
 	@AfterClass
 	public void closebrowser() {
 		extent.flush();
-		extent.endTest(test);
+//		extent.endTest(test);
 		driver.close();
 	}
 	
