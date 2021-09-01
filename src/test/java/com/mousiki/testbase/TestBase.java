@@ -4,13 +4,25 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -144,7 +156,13 @@ public class TestBase {
 				reportlog(name + "clicked successfully", "INFO");
 			}
 		}catch(Exception e) {
-			reportlog("An exception occured while click for element " + name, "FAIL", "Click fail");
+			try {
+				WebElement ele = driver.findElement(ElementLocator);
+				JavascriptExecutor executor = (JavascriptExecutor)driver;
+				executor.executeScript("arguments[0].click();", ele);
+			}catch(Exception f) {
+				reportlog("An exception occured while click for element " + name + " Exeception:" + f, "FAIL", "Click fail");
+			}
 		}
 	}
 	
@@ -161,11 +179,13 @@ public class TestBase {
 			WebElement ele = driver.findElement(ElementLocator);
 			if(ele.isDisplayed()) {
 				ele.clear();
+				ele.sendKeys(Keys.CONTROL + "a");
+				ele.sendKeys(Keys.DELETE);
 				ele.sendKeys(value);
 				reportlog(name + "entered successfully", "INFO");
 			}
 		}catch(Exception e) {
-			reportlog("An exception occured while enter for element " + name, "FAIL", "Enter text fail");
+			reportlog("An exception occured while enter for element " + name + " Exeception:" + e, "FAIL", "Enter text fail");
 		}
 			
 	}
@@ -182,6 +202,15 @@ public class TestBase {
 	}
 	
 	/**
+	 * hard wait for execution to stop in the middle
+	 * @param timeout
+	 * @throws InterruptedException
+	 */
+	public static void hardwait(int timeout) throws InterruptedException {
+		Thread.sleep(timeout);
+	}
+	
+	/**
 	 * check whether element exist in the current application page
 	 * @param driver
 	 * @param timeout
@@ -191,6 +220,8 @@ public class TestBase {
 	public static boolean checkelementexists(WebDriver driver, int timeout, By ElementLocator) {
 		boolean returnvalue = false;
 		try {
+			waitforelementvisible(driver, timeout, ElementLocator);
+			
 			if(driver.findElement(ElementLocator).isDisplayed()) {
 				returnvalue = true;
 			}
@@ -198,6 +229,91 @@ public class TestBase {
 			returnvalue = false;
 		}
 		return returnvalue;
+	}
+	
+	/**
+	 * method to connect DB and return query result
+	 * @param query
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public static String[][] getDBValues(String query){
+		String rn[][] = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");  
+			String hostname = prop.getProperty("DBHostname");
+			String username = prop.getProperty("DBUsername");
+			String password = prop.getProperty("DBPassword");
+			
+			Connection con=DriverManager.getConnection(  
+					hostname,username,password);  
+			
+			/*Statement stmt=con.createStatement();  
+			ResultSet rs=stmt.executeQuery(query);  */
+			
+			//alternate method to overcome type forward only exception
+			PreparedStatement pstat = con.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ResultSet rs = pstat.executeQuery();
+			
+			//retrieve row count
+			rs.last();
+			int rows = rs.getRow();
+			System.out.println("DB Rows:"+ rows);
+			
+			//retrieve column count
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columns = rsmd.getColumnCount();
+			System.out.println("DB column:"+ columns);
+			
+			if(rows > 0) {			
+				String data[][] = new String[rows][columns];
+				
+				int i=0;
+				rs.beforeFirst();
+				while(rs.next()) {
+					for(int j=0;j<columns;j++) {
+						data[i][j] = rs.getString(j+1);
+					}
+					i++;
+				}
+				return data;
+			}else {
+				return null;
+			}
+		}catch(Exception e) {
+			return null;
+		}
+		
+	}
+	
+	public static Object[][] getexcelinput() throws IOException{
+		//declare data formatter
+		DataFormatter format = new DataFormatter();
+		
+		//create file for datasheet
+		FileInputStream tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		
+		//create workbook and worksheet
+		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
+		XSSFSheet ws = wb.getSheetAt(0);
+		
+		//get rowcount and columncount
+		int rowcount = ws.getPhysicalNumberOfRows();
+		XSSFRow row = ws.getRow(0);
+		int colcount = row.getLastCellNum();
+		
+		//create data object
+		Object data[][] = new Object[rowcount-1][colcount];
+		
+		//read values from excel cell
+		for(int i=0;i<rowcount-1;i++) {
+			row = ws.getRow(i+1);
+			for(int j=0;j<colcount;j++) {
+				data[i][j] = format.formatCellValue(row.getCell(j));
+			}
+		}
+		return data;
 	}
 	
 	/**
@@ -268,4 +384,32 @@ public class TestBase {
 			test.info(stepdescription);
 		}
 	}
+	
+	// function to generate a random string of length n
+    public static String getAlphaNumericString(int n)
+    {
+  
+        // chose a Character random from this String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    + "0123456789"
+                                    + "abcdefghijklmnopqrstuvxyz";
+  
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(n);
+  
+        for (int i = 0; i < n; i++) {
+  
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                = (int)(AlphaNumericString.length()
+                        * Math.random());
+  
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                          .charAt(index));
+        }
+  
+        return sb.toString();
+    }
 }

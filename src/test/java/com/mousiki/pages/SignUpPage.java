@@ -15,13 +15,18 @@ public class SignUpPage {
 	WebDriver driver;
 	
 	//signup webelements
-	By signuplink = By.xpath("//a[contains(.,'Sign Up')]");
+	By signuplink = By.xpath("//ul/li[1]/a[contains(.,'Sign')]");
 	By imparentlink = By.xpath("//a[contains(.,'Parent')]");
 	By imteacherlink = By.xpath("//a[contains(.,'Teacher')]");
 	By imstudentlink = By.xpath("//a[contains(.,'Student')]");
 	By wermusicschoollink = By.xpath("//a[contains(.,'School')]");
+	By confirmregloginlink = By.xpath("//a[contains(.,'login')]");
 	
 	By registerbtn = By.xpath("//button[contains(.,'Register')]");
+	
+	By registercompletionmsg = By.xpath("//h2[contains(.,'Registration Completed')]");
+	By registerconfirmmsg = By.xpath("//p[contains(.,'Your account has been verified successfully, click here to')]");
+	
 	
 	By firstnametxt = By.xpath("//*[@id='firstName']");
 	By lastnametxt = By.xpath("//*[@id='lastName']");
@@ -34,6 +39,7 @@ public class SignUpPage {
 	String imstudentlinknm = "I'm a Student";
 	String imteacherlinknm = "I'm a Teacher";
 	String wermusicschoollinknm = "We're Music School";
+	String confirmregloginlinknm = "Login after register confirmation";
 	
 	String registerbtnnm = "Register";
 	
@@ -54,6 +60,10 @@ public class SignUpPage {
 		return driver.getCurrentUrl();
 	}
 	
+	public void confirmregistration(String verifi_link) {
+		driver.get("https://qa.mousiki.io/VerifyUser?token=" + verifi_link);
+	}
+	
 	public void enterfirstname(String firstname) throws Throwable {
 		TestBase.entertext(driver, firstnametxt, firstname, firstnametxtnm);
 	}
@@ -68,6 +78,8 @@ public class SignUpPage {
 	
 	public void enterpassword(String password) throws Throwable {
 		TestBase.entertext(driver, passwordtxt, password, passwordtxtnm);
+		
+		TestBase.waitforelementvisible(driver, 30, registerbtn);
 	}
 	
 	public void clicksignup() throws Throwable {
@@ -78,6 +90,10 @@ public class SignUpPage {
 	
 	public void clickregister() throws Throwable {
 		TestBase.click(driver, registerbtn, registerbtnnm);
+	}
+	
+	public void clickloginafterregister() throws Throwable {
+		TestBase.click(driver, confirmregloginlink, confirmregloginlinknm);
 	}
 	
 	public void clickimparent() throws Throwable {
@@ -102,5 +118,15 @@ public class SignUpPage {
 		TestBase.click(driver, wermusicschoollink, wermusicschoollinknm);
 		
 		TestBase.waitforelementvisible(driver, 30, firstnametxt);
+	}
+	
+	public boolean checkforregistercompletion() throws Throwable {
+				
+		return TestBase.checkelementexists(driver, 30, registercompletionmsg);
+	}
+	
+	public boolean checkforregisterconfirmation() throws Throwable {
+		
+		return TestBase.checkelementexists(driver, 30, confirmregloginlink);
 	}
 }

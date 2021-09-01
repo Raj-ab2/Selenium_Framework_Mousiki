@@ -3,6 +3,7 @@ package com.mousiki.testscripts;
 import java.io.IOException;
 
 import org.testng.Assert;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
 
 import com.mousiki.pages.SignInPage;
@@ -20,10 +21,16 @@ public class Login extends TestBase{
 		signinpage = new SignInPage(driver);
 	}
 	
+	@BeforeTest
+	public void startTest(final ITestContext testContext) {
+	    System.out.println("Test Name - " + testContext.getName()); // it prints "Check name test"
+	    test = extent.createTest(testContext.getName());
+	}
+	
 	@Test
 	@Parameters ({"emailid", "password"})
 	public void AppLogin(String emailid, String password) throws Throwable {
-		test = extent.createTest("TC01_Login");
+		
 		
 		//click signin link
 		signinpage.clicksigninlink();
