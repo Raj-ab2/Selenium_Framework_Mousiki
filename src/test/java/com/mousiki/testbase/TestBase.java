@@ -11,12 +11,20 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -190,6 +198,65 @@ public class TestBase {
 			
 	}
 	
+	public static String getelementtext(WebDriver driver, By ElementLocator, String name) throws IOException {
+		String elementtext = "";
+		try {
+			WebElement ele = driver.findElement(ElementLocator);
+			if(ele.isDisplayed()) {
+				elementtext = ele.getText();
+				reportlog(name + "get text from element successfully", "INFO");
+			}
+			return elementtext;
+		}catch(Exception e) {
+			reportlog("An exception occured while enter for element " + name + " Exeception:" + e, "FAIL", "Enter text fail");
+			return elementtext;
+		}
+			
+	}
+	
+	/**
+	 * method to enter text in textbox using webdriver and element locator
+	 * @param driver
+	 * @param ElementLocator
+	 * @param value
+	 * @param name
+	 * @throws IOException
+	 */
+	public static void sendtext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
+		try {
+			WebElement ele = driver.findElement(ElementLocator);
+			if(ele.isDisplayed()) {
+				ele.click();
+				ele.sendKeys(value);
+				reportlog(name + "entered successfully", "INFO");
+			}
+		}catch(Exception e) {
+			reportlog("An exception occured while enter for element " + name + " Exeception:" + e, "FAIL", "Enter text fail");
+		}
+			
+	}
+	
+	/**
+	 * method to enter text in textbox using webdriver and element locator
+	 * @param driver
+	 * @param ElementLocator
+	 * @param value
+	 * @param name
+	 * @throws IOException
+	 */
+	public static void selectlist(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
+		try {
+			WebElement ele = driver.findElement(ElementLocator);
+			if(ele.isDisplayed()) {
+				ele.sendKeys(value + Keys.ENTER);
+				reportlog(name + "Selected successfully", "INFO");
+			}
+		}catch(Exception e) {
+			reportlog("An exception occured while select for element " + name + " Exeception:" + e, "FAIL", "Select text fail");
+		}
+			
+	}
+	
 	/**
 	 * explicit wait component for webdriver and element locator
 	 * @param driver
@@ -287,7 +354,8 @@ public class TestBase {
 		
 	}
 	
-	public static Object[][] getexcelinput() throws IOException{
+	public static Object[][] getexcelinput(String sheetname, String testname){
+		try {
 		//declare data formatter
 		DataFormatter format = new DataFormatter();
 		
@@ -296,24 +364,37 @@ public class TestBase {
 		
 		//create workbook and worksheet
 		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
-		XSSFSheet ws = wb.getSheetAt(0);
+		XSSFSheet ws = wb.getSheet(sheetname);
+//		XSSFSheet ws = wb.getSheetAt(0);
 		
 		//get rowcount and columncount
 		int rowcount = ws.getPhysicalNumberOfRows();
 		XSSFRow row = ws.getRow(0);
 		int colcount = row.getLastCellNum();
 		
+		System.out.println("Rows:"+rowcount);
+		System.out.println("col:"+colcount);
 		//create data object
 		Object data[][] = new Object[rowcount-1][colcount];
 		
+		System.out.println(sheetname+":");
+		System.out.println(testname+":");
 		//read values from excel cell
 		for(int i=0;i<rowcount-1;i++) {
 			row = ws.getRow(i+1);
-			for(int j=0;j<colcount;j++) {
-				data[i][j] = format.formatCellValue(row.getCell(j));
+			if(row.getCell(0).toString().equalsIgnoreCase(testname)) {
+				System.out.println("matched:"+row.getCell(0).toString());
+				for(int j=0;j<colcount;j++) {
+					data[i][j] = format.formatCellValue(row.getCell(j));
+					System.out.println("data at "+i+", "+j+ " " +data[i][j]);
+				}
 			}
 		}
 		return data;
+		}catch(Exception e) {
+			System.out.println("Exception occurs:" + e);
+		}
+		return null;
 	}
 	
 	/**
@@ -412,4 +493,66 @@ public class TestBase {
   
         return sb.toString();
     }
+    
+	public static Object[][] getExcelData(String sheetname, String testname) throws Throwable{
+		//create file for datasheet
+		FileInputStream tsdata;
+		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		
+		//create workbook and worksheet
+		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
+		
+		Sheet sheet = wb.getSheet(sheetname);
+		Iterable<Row> rows = sheet::rowIterator;
+		List<Map<String, String>> results = new ArrayList<>();
+		boolean header = true;
+		List<String> keys = null;
+		for (Row row : rows) {
+		  List<String> values = getValuesInEachRow(row);
+		  if (header) {
+			header = false;
+			keys = values;
+			continue;
+		  }
+		  if(values.contains(testname) && values.contains("YES")) {
+			  results.add(transform(keys, values));
+			  
+		  }
+		}
+		return asTwoDimensionalArray(results);
+	}
+	
+	private static Object[][] asTwoDimensionalArray(List<Map<String, String>> interimResults) {
+		Object[][] results = new Object[interimResults.size()][1];
+		int index = 0;
+		for (Map<String, String> interimResult : interimResults) {
+		  results[index++] = new Object[] {interimResult};
+		}
+		return results;
+	}
+
+	private static Map<String, String> transform(List<String> names, List<String> values) {
+		Map<String, String> results = new HashMap<>();
+		for (int i = 0; i < names.size(); i++) {
+		  String key = names.get(i);
+		  String value = "";
+		  try {
+			  value = values.get(i);
+		  }catch(Exception e) {}
+		  results.put(key, value);
+		}
+		System.out.println(results);
+		return results;
+	}
+
+	private static List<String> getValuesInEachRow(Row row) {
+		//declare data formatter
+		DataFormatter format = new DataFormatter();
+		List<String> data = new ArrayList<>();
+		Iterable<Cell> columns = row::cellIterator;
+		for (Cell column : columns) {
+			data.add(format.formatCellValue(column));
+		}
+		return data;
+	}
 }

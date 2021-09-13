@@ -22,6 +22,14 @@ public class SignUpPage {
 	By wermusicschoollink = By.xpath("//a[contains(.,'School')]");
 	By confirmregloginlink = By.xpath("//a[contains(.,'login')]");
 	
+	By emptyfirstnameerr = By.xpath("//div[@class='input-feedback'][contains(.,'First Name is required')]");
+	By emptylastnameerr = By.xpath("//div[@class='input-feedback'][contains(.,'Last Name is required')]");
+	By emptyemailerr = By.xpath("//div[@class='input-feedback'][contains(.,'Please provide a valid email')]");
+	By passworderr = By.xpath("//div/div[contains(@class,'input-feedback')]");
+	By invalidfielderr = By.xpath("//div[@class='custom-error-message']");
+	
+	By logoimg = By.xpath("//img[@alt='Logo']");
+	
 	By registerbtn = By.xpath("//button[contains(.,'Register')]");
 	
 	By registercompletionmsg = By.xpath("//h2[contains(.,'Registration Completed')]");
@@ -40,7 +48,7 @@ public class SignUpPage {
 	String imteacherlinknm = "I'm a Teacher";
 	String wermusicschoollinknm = "We're Music School";
 	String confirmregloginlinknm = "Login after register confirmation";
-	
+	String logoimgnm = "Mousiki logo";
 	String registerbtnnm = "Register";
 	
 	String firstnametxtnm = "First Name";
@@ -88,6 +96,10 @@ public class SignUpPage {
 		TestBase.waitforelementvisible(driver, 30, imstudentlink);
 	}
 	
+	public void clicklogoimage() throws Throwable {
+		TestBase.click(driver, logoimg, logoimgnm);
+	}
+	
 	public void clickregister() throws Throwable {
 		TestBase.click(driver, registerbtn, registerbtnnm);
 	}
@@ -129,4 +141,45 @@ public class SignUpPage {
 		
 		return TestBase.checkelementexists(driver, 30, confirmregloginlink);
 	}
+	
+	public boolean checkemptyfirstname() throws Throwable {
+		
+		return TestBase.checkelementexists(driver, 5, emptyfirstnameerr);
+	}
+	
+	public boolean checkemptylastname() throws Throwable {
+		
+		return TestBase.checkelementexists(driver, 5, emptylastnameerr);
+	}
+	
+	public boolean checkemptyemail() throws Throwable {
+		
+		return TestBase.checkelementexists(driver, 5, emptyemailerr);
+	}
+	
+	public boolean checkpassworderror(String experrormsg) throws Throwable {
+		
+		if(TestBase.checkelementexists(driver, 5, passworderr)) {
+			if(TestBase.getelementtext(driver, passworderr, "pasworderrormessage").contains(experrormsg)) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkinvalidfield(String experrormsg) throws Throwable {
+		if(TestBase.checkelementexists(driver, 5, invalidfielderr)) {
+			System.out.println("**EXP:"+TestBase.getelementtext(driver, invalidfielderr, "customerrormessage"));
+			System.out.println("**ACT:"+experrormsg);
+			if(TestBase.getelementtext(driver, invalidfielderr, "customerrormessage").contains(experrormsg)) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return false;
+	}
 }
+	

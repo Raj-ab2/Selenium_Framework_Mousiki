@@ -34,7 +34,6 @@ public class SignInPage {
 	
 	String signinurlexpected = "https://qa.mousiki.io/SignIn";
 	
-	
 	public SignInPage(WebDriver driver) {
 		this.driver = driver;
 	}
