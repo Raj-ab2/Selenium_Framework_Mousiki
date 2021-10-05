@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -42,12 +43,14 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.TestNG;
 import org.testng.annotations.*;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.mousiki.testscripts.Register;
 
 /*import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -68,14 +71,19 @@ public class TestBase {
 	 * property readers
 	 * XML Readers
 	 */
-	public static WebDriver driver;
+//	public static WebDriver driver;
+//	public ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	public static Properties prop;
 	public static FileInputStream fis;
 	
 	public static ExtentTest test;
 	public static ExtentReports extent;
+	private static ThreadLocal<ExtentTest> extenttest;
+	
+	
 	
 	static {
+		System.out.println("Extent Report Initialize");
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
 		extent = new ExtentReports();
@@ -84,7 +92,7 @@ public class TestBase {
 		spark.config().setTheme(Theme.DARK);
 		spark.config().setDocumentTitle("Mousiki Automation");
 		extent.attachReporter(spark);
-
+		extenttest = new ThreadLocal<ExtentTest>();
 	}
 	
 	/**
@@ -100,13 +108,32 @@ public class TestBase {
 		
 	}
 	
+	/*public void setdriver(WebDriver newdriver) {
+		this.driver.set(newdriver);
+	}
+	
+	public WebDriver getDriver()
+	{
+		return this.driver.get();
+	}*/
+	
 	/**
 	 * browser invoke based on browser name in property file
 	 * @throws IOException
 	 */
 	public void invoke() throws IOException {
+		
 		System.out.println("browser name=" + prop.getProperty("browsername"));
-		invokeBrowser(prop.getProperty("browsername"));
+		
+		/*invokeBrowser(prop.getProperty("browsername"));
+		try {
+			hardwait(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		WebDriver driver = BrowserFactory.getInstance().getDriver();
 		driver.get(prop.getProperty("URL"));
 		driver.manage().window().maximize();
 	}
@@ -116,7 +143,7 @@ public class TestBase {
 	 * @param browser
 	 */
 	@SuppressWarnings("deprecation")
-	public void invokeBrowser(String browser) {
+	/*public void invokeBrowser(String browser) {
 		if(prop.getProperty("OsName").contains("Win")) {
 			if(browser.contains("chrome")) {
 				WebDriverManager.chromedriver().setup();
@@ -125,28 +152,28 @@ public class TestBase {
 				DesiredCapabilities cap = new DesiredCapabilities().chrome();
 				cap.setCapability(ChromeOptions.CAPABILITY, options);
 				
-				driver = new ChromeDriver(cap);
-				
+//				driver = new ChromeDriver(cap);
+				setdriver(new ChromeDriver(cap));
 			}else if(browser.contains("firefox")) {
 				WebDriverManager.firefoxdriver().setup();
 				FirefoxOptions fp = new FirefoxOptions();
 				String path = "";
 				fp.setBinary(path);
-				driver = new FirefoxDriver(fp);
-				
+//				driver = new FirefoxDriver(fp);
+				setdriver(new FirefoxDriver(fp));
 			}else {
 				//for other browsers
 			}
 			
 			//do implicit wait 
-			driver.manage().timeouts().implicitlyWait(Long.parseLong(prop.getProperty("Implicitwait")), TimeUnit.SECONDS);
+			getDriver().manage().timeouts().implicitlyWait(Long.parseLong(prop.getProperty("Implicitwait")), TimeUnit.SECONDS);
 			
 		}else if(prop.getProperty("OsName").contains("mac")) {
 			if(browser.contains("safari")) {
 				
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * method to click a webelement using webdriver and element locator
@@ -155,7 +182,7 @@ public class TestBase {
 	 * @param name
 	 * @throws IOException
 	 */
-	public static void click(WebDriver driver, By ElementLocator, String name) throws IOException {
+	public void click(WebDriver driver, By ElementLocator, String name) throws IOException {
 		try {
 			
 			WebElement ele = driver.findElement(ElementLocator);
@@ -182,7 +209,7 @@ public class TestBase {
 	 * @param name
 	 * @throws IOException
 	 */
-	public static void entertext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
+	public void entertext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
 			if(ele.isDisplayed()) {
@@ -198,7 +225,7 @@ public class TestBase {
 			
 	}
 	
-	public static String getelementtext(WebDriver driver, By ElementLocator, String name) throws IOException {
+	public String getelementtext(WebDriver driver, By ElementLocator, String name) throws IOException {
 		String elementtext = "";
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
@@ -222,7 +249,7 @@ public class TestBase {
 	 * @param name
 	 * @throws IOException
 	 */
-	public static void sendtext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
+	public void sendtext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
 			if(ele.isDisplayed()) {
@@ -244,7 +271,7 @@ public class TestBase {
 	 * @param name
 	 * @throws IOException
 	 */
-	public static void selectlist(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
+	public void selectlist(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
 			if(ele.isDisplayed()) {
@@ -274,7 +301,21 @@ public class TestBase {
 	 * @throws InterruptedException
 	 */
 	public static void hardwait(int timeout) throws InterruptedException {
-		Thread.sleep(timeout);
+		Thread.currentThread().sleep(timeout);
+	}
+	
+	/**
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public int generaterandomnumber(int min, int max) {
+		Random rand = new Random();
+
+		// nextInt as provided by Random is exclusive of the top value so you need to add 1 
+
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+		return randomNum;
 	}
 	
 	/**
@@ -411,18 +452,23 @@ public class TestBase {
 	 * @return screenshot path
 	 * @throws IOException
 	 */
-	public static String takescreenshot() throws IOException {
+	public String takescreenshot() throws IOException {
 		//create screenshot file name
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
 		String screenshotpath = System.getProperty("user.dir") + "\\screenshots\\" + "RUN_" + formatter.format(cal.getTime()) + ".png";
 		
 		//Convert webdriver to TakeScreenshot
-		File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		File screenshotFile = ((TakesScreenshot) BrowserFactory.getInstance().getDriver()).getScreenshotAs(OutputType.FILE);
 		
 		FileUtils.copyFile(screenshotFile , new File(screenshotpath));
 		
 		return screenshotpath;
+	}
+	
+	public void extenttestinitialize(String testname) {
+		test = extent.createTest(testname);
+		extenttest.set(test);
 	}
 	
 	/**
@@ -432,8 +478,8 @@ public class TestBase {
 	 * @param screenshotname
 	 * @throws IOException
 	 */
-	public static void reportlog(String stepdescription, String status, String screenshotname) throws IOException {
-		if(status.equalsIgnoreCase("PASS")) {
+	public void reportlog(String stepdescription, String status, String screenshotname) throws IOException {
+		/*if(status.equalsIgnoreCase("PASS")) {
 			test.pass(stepdescription);
 			test.addScreenCaptureFromPath(takescreenshot(), screenshotname);
 		}else if(status.equalsIgnoreCase("FAIL")) {
@@ -445,6 +491,19 @@ public class TestBase {
 		}else {
 			test.info(stepdescription);
 			test.addScreenCaptureFromPath(takescreenshot(), screenshotname);
+		}*/
+		if(status.equalsIgnoreCase("PASS")) {
+			extenttest.get().pass(stepdescription);
+			extenttest.get().addScreenCaptureFromPath(takescreenshot(), screenshotname);
+		}else if(status.equalsIgnoreCase("FAIL")) {
+			extenttest.get().fail(stepdescription);
+			extenttest.get().addScreenCaptureFromPath(takescreenshot(), screenshotname);
+		}else if(status.equalsIgnoreCase("INFO")) {
+			extenttest.get().info(stepdescription);
+			extenttest.get().addScreenCaptureFromPath(takescreenshot(), screenshotname);
+		}else {
+			extenttest.get().info(stepdescription);
+			extenttest.get().addScreenCaptureFromPath(takescreenshot(), screenshotname);
 		}
 	}
 	
@@ -455,7 +514,7 @@ public class TestBase {
 	 * @throws IOException
 	 */
 	public static void reportlog(String stepdescription, String status) throws IOException {
-		if(status.equalsIgnoreCase("PASS")) {
+		/*if(status.equalsIgnoreCase("PASS")) {
 			test.pass(stepdescription);
 		}else if(status.equalsIgnoreCase("FAIL")) {
 			test.fail(stepdescription);
@@ -463,6 +522,15 @@ public class TestBase {
 			test.info(stepdescription);
 		}else {
 			test.info(stepdescription);
+		}*/
+		if(status.equalsIgnoreCase("PASS")) {
+			extenttest.get().pass(stepdescription);
+		}else if(status.equalsIgnoreCase("FAIL")) {
+			extenttest.get().fail(stepdescription);
+		}else if(status.equalsIgnoreCase("INFO")) {
+			extenttest.get().info(stepdescription);
+		}else {
+			extenttest.get().info(stepdescription);
 		}
 	}
 	
@@ -494,7 +562,90 @@ public class TestBase {
         return sb.toString();
     }
     
-	public static Object[][] getExcelData(String sheetname, String testname) throws Throwable{
+    public static boolean checktestphase(String testscenario, String testphase) throws Throwable{
+    	boolean validtestphase = false;
+    	//create file for datasheet
+		FileInputStream tsdata;
+		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		
+		//create workbook and worksheet
+		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
+		
+		Sheet sheet = wb.getSheet("TestBase");
+		Iterable<Row> rows = sheet::rowIterator;
+		
+		boolean header = true;
+		List<String> keys = null;
+		int testphaseindex = -1;
+		int testscenarioindex = -1;
+		for (Row row : rows) {
+		  List<String> values = getValuesInEachRow(row);
+		  if (header) {
+			  
+			  for (int headindex = 0;headindex<values.size();headindex++) {
+				  if(values.get(headindex).equalsIgnoreCase(testphase)) {
+					  testphaseindex = headindex;
+				  }
+				  if(values.get(headindex).equalsIgnoreCase("TestScenario")) {
+					  testscenarioindex = headindex;
+				  }
+			  }
+			header = false;
+			keys = values;
+			continue;
+		  }
+		  if(values.get(testphaseindex).contains("YES") && values.get(testscenarioindex).contains(testscenario)) {
+			  validtestphase = true;
+			  break;
+		  }
+		}
+    	return validtestphase;
+    }
+    public static List<String> gettestphasetestlist(String testscenario, String testphase) throws Throwable{
+		
+		//create file for datasheet
+		FileInputStream tsdata;
+		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		
+		//create workbook and worksheet
+		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
+		
+		Sheet sheet = wb.getSheet("TestBase");
+		Iterable<Row> rows = sheet::rowIterator;
+		List<String> results = new ArrayList<>();
+		boolean header = true;
+		List<String> keys = null;
+		int testphaseindex = -1;
+		int testscenarioindex = -1;
+		int testnameindex = -1;
+		for (Row row : rows) {
+		  List<String> values = getValuesInEachRow(row);
+		  if (header) {
+			  
+			  for (int headindex = 0;headindex<values.size();headindex++) {
+				  if(values.get(headindex).equalsIgnoreCase(testphase)) {
+					  testphaseindex = headindex;
+				  }
+				  if(values.get(headindex).equalsIgnoreCase("TestScenario")) {
+					  testscenarioindex = headindex;
+				  }
+				  if(values.get(headindex).equalsIgnoreCase("Testcase name")) {
+					  testnameindex = headindex;
+				  }
+			  }
+			header = false;
+			keys = values;
+			continue;
+		  }
+		  if(values.get(testphaseindex).contains("YES") && values.get(testscenarioindex).contains(testscenario)) {
+			  results.add(values.get(testnameindex));
+			  
+		  }
+		}
+		return results;
+	}
+    
+	public static Object[][] getExcelData(String sheetname, String testname, String testphase) throws Throwable{
 		//create file for datasheet
 		FileInputStream tsdata;
 		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
@@ -507,17 +658,29 @@ public class TestBase {
 		List<Map<String, String>> results = new ArrayList<>();
 		boolean header = true;
 		List<String> keys = null;
-		for (Row row : rows) {
-		  List<String> values = getValuesInEachRow(row);
-		  if (header) {
-			header = false;
-			keys = values;
-			continue;
-		  }
-		  if(values.contains(testname) && values.contains("YES")) {
-			  results.add(transform(keys, values));
+		boolean validtestphase = checktestphase(sheetname, testphase);
+		if(validtestphase) {
+			int testphaseindex = -1;
+			for (Row row : rows) {
+			  List<String> values = getValuesInEachRow(row);
+			  if (header) {
+				header = false;
+				keys = values;
+				for (int headindex = 0;headindex<values.size();headindex++) {
+					  if(values.get(headindex).equalsIgnoreCase(testphase)) {
+						  testphaseindex = headindex;
+						  break;
+					  }
+				}
+				continue;
+			  }
 			  
-		  }
+			  if(values.get(0).contains(testname) && values.get(testphaseindex).equalsIgnoreCase("YES")) {
+				  results.add(transform(keys, values));
+			  }
+			}
+		}else {
+			System.out.println("skipping test scenario:" + sheetname);
 		}
 		return asTwoDimensionalArray(results);
 	}

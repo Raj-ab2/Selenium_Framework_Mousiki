@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 
 import com.mousiki.testbase.TestBase;
 
-public class FirstLoginPage {
+
+
+public class FirstLoginPage extends TestBase {
 	//create webdriver variable
 	WebDriver driver;
 	
@@ -74,101 +76,101 @@ public class FirstLoginPage {
 	}
 	
 	public void clickconfirmbutton() throws IOException {
-		if(TestBase.checkelementexists(driver, 10, confirmbtn)) {
-			TestBase.click(driver, confirmbtn, confirmbtnnm);
+		if(checkelementexists(driver, 10, confirmbtn)) {
+			click(driver, confirmbtn, confirmbtnnm);
 		}
 	}
 	
 	public void clickprofileiconbutton() throws IOException {
-		if(TestBase.checkelementexists(driver, 10, profilebtn)) {
-			TestBase.click(driver, profilebtn, profilebtnnm);
+		if(checkelementexists(driver, 10, profilebtn)) {
+			click(driver, profilebtn, profilebtnnm);
 		}
-		if(TestBase.checkelementexists(driver, 10, profilebtn2)) {
-			TestBase.click(driver, profilebtn2, profilebtnnm);
+		if(checkelementexists(driver, 10, profilebtn2)) {
+			click(driver, profilebtn2, profilebtnnm);
 		}
 	}
 	
 	public void clicklogoutlink() throws IOException {
-		TestBase.click(driver, logoutlink, logoutlinknm);
+		click(driver, logoutlink, logoutlinknm);
 	}
 	
 	public void clickokbutton() throws IOException {
-		if(TestBase.checkelementexists(driver, 10, okbtn)) {
-			TestBase.click(driver, okbtn, okbtnnm);
+		if(checkelementexists(driver, 10, okbtn)) {
+			click(driver, okbtn, okbtnnm);
 		}
 	}
 	
 	public void clickenablecheckbox() throws IOException {
-		TestBase.click(driver, pushnotifycheckbox, pushnotifycheckboxnm);
+		click(driver, pushnotifycheckbox, pushnotifycheckboxnm);
 	}
 	
 	public void clickacceptcheckbox() throws IOException {
-		TestBase.click(driver, termcondcheckbox, termcondcheckboxnm);
+		click(driver, termcondcheckbox, termcondcheckboxnm);
 	}
 	
 	public void clicksubmitbutton() throws IOException {
-		TestBase.click(driver, submitbtn, submitbtnnm);
+		click(driver, submitbtn, submitbtnnm);
 	}
 	
 	public void clickresetbutton() throws IOException {
-		TestBase.click(driver, resetbtn, resetbtnnm);
+		click(driver, resetbtn, resetbtnnm);
 	}
 	
 	public void selectusertype(String usertype) throws IOException {
-		TestBase.waitforelementvisible(driver, 30, usertypelist);
-		TestBase.selectlist(driver, usertypelist, usertype, usertypelistnm);
+		waitforelementvisible(driver, 30, usertypelist);
+		selectlist(driver, usertypelist, usertype, usertypelistnm);
 	}
 	
 	public void selectinstrument(String instrument) throws IOException {
-		TestBase.selectlist(driver, instrumentlist, instrument, instrumentlistnm);
+		selectlist(driver, instrumentlist, instrument, instrumentlistnm);
 	}
 	
 	public void selectgender(String gender) throws IOException {
 		if(gender.equalsIgnoreCase("MALE"))
-			TestBase.click(driver, maleradio, maleradionm);
+			click(driver, maleradio, maleradionm);
 		else if(gender.equalsIgnoreCase("FEMALE"))
-			TestBase.click(driver, femaleradio, femaleradionm);
+			click(driver, femaleradio, femaleradionm);
 		else
-			TestBase.click(driver, otherradio, otherradionm);
+			click(driver, otherradio, otherradionm);
 	}
 	
 	public void enterphonenumber(String phonenumber) throws IOException {
-		TestBase.entertext(driver, phonenotxt, phonenumber, phonenotxtnm);
+		entertext(driver, phonenotxt, phonenumber, phonenotxtnm);
 	}
 	
 	public void enterschoolname(String schoolname) throws IOException {
-		TestBase.entertext(driver, schoolnametxt, schoolname, schoolnametxtnm);
+		entertext(driver, schoolnametxt, schoolname, schoolnametxtnm);
 	}
 	
 	public void enteraddress1(String address1) throws IOException {
-		TestBase.entertext(driver, address1txt, address1, address1txtnm);
+		entertext(driver, address1txt, address1, address1txtnm);
 	}
 	
 	public void enteraddress2(String address2) throws IOException {
-		TestBase.entertext(driver, address2txt, address2, address2txtnm);
+		entertext(driver, address2txt, address2, address2txtnm);
 	}
 	
 	public void entercity(String city) throws IOException {
-		TestBase.entertext(driver, citytxt, city, citytxtnm);
+		entertext(driver, citytxt, city, citytxtnm);
 	}
 	
 	public void enterpincode(String pincode) throws IOException {
-		TestBase.entertext(driver, pincodetxt, pincode, pincodetxtnm);
+		entertext(driver, pincodetxt, pincode, pincodetxtnm);
 	}
 	
 	public void enterstate(String state) throws IOException {
-		TestBase.entertext(driver, statetxt, state, statetxtnm);
+		entertext(driver, statetxt, state, statetxtnm);
 	}
 	
 	public void enterdateofbirth(String dateofbirth) throws IOException {
-		TestBase.entertext(driver, dateofbirthtxt, dateofbirth, dateofbirthtxtnm);
+		entertext(driver, dateofbirthtxt, dateofbirth, dateofbirthtxtnm);
 	}
 	
 	public void uploadprofilepic(String profilepicpath) throws IOException {
-		TestBase.entertext(driver, profilepictxt, profilepicpath, profilepictxtnm);
+		entertext(driver, profilepictxt, profilepicpath, profilepictxtnm);
 	}
 	
 	public boolean checkhomepage() throws IOException{
-		return TestBase.checkelementexists(driver, 30, invoicesummtxt);
+		return checkelementexists(driver, 30, invoicesummtxt);
 	}
 }

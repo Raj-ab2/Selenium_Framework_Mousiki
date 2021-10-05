@@ -78,32 +78,8 @@ public class Testmain {
 			
 		}catch(Exception e){ System.out.println(e);}*/
 		
-		
 	}
-	/*public static Object[][] getExcelData() throws Throwable{
-		//create file for datasheet
-		FileInputStream tsdata;
-		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
-		
-		//create workbook and worksheet
-		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
-		
-		Sheet sheet = wb.getSheet("Registration");
-		Iterable<Row> rows = sheet::rowIterator;
-		List<Map<String, String>> results = new ArrayList<>();
-		boolean header = true;
-		List<String> keys = null;
-		for (Row row : rows) {
-		  List<String> values = getValuesInEachRow(row);
-		  if (header) {
-			header = false;
-			keys = values;
-			continue;
-		  }
-		  results.add(transform(keys, values));
-		}
-		return asTwoDimensionalArray(results);
-	}
+	
 	
 	private static Object[][] asTwoDimensionalArray(List<Map<String, String>> interimResults) {
 		Object[][] results = new Object[interimResults.size()][1];
@@ -133,5 +109,5 @@ public class Testmain {
 		  data.add(format.formatCellValue(column));
 		}
 		return data;
-	}*/
+	}
 }

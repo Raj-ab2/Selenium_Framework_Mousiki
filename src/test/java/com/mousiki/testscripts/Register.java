@@ -5,14 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -21,44 +24,64 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.mousiki.dataprovider.TestCaseData;
 import com.mousiki.pages.FirstLoginPage;
 import com.mousiki.pages.SignInPage;
 import com.mousiki.pages.SignUpPage;
+import com.mousiki.testbase.BrowserFactory;
 import com.mousiki.testbase.TestBase;
 
+import oracle.jrockit.jfr.events.DynamicValueDescriptor;
+
 public class Register extends TestBase {
+	
 	SignUpPage signuppage;
 	SignInPage signinpage;
 	FirstLoginPage firstloginpage;
 	
-	static String testngtestname="";
-	static String testngtestmethod="";
-	
 	@BeforeClass
 	public void setup() throws IOException {
-		//Invoke the browser
-		invoke();
-		signuppage = new SignUpPage(driver);
-		signinpage = new SignInPage(driver);
-		firstloginpage = new FirstLoginPage(driver);
+		System.out.println("Before Class");
 	}
 	
 	@BeforeTest
 	public void startTest(final ITestContext testContext) throws IOException {
-		testngtestname = testContext.getName();
-	    System.out.println("Test Name - " + testngtestname); // it prints "Check name test"
+		System.setProperty("testngtestname", testContext.getName());
+	    System.out.println("Test Name - " + testContext.getName()); // it prints "Check name test"
 //	    test = extent.createTest(testContext.getName());
+//	    testsuitename = testContext.getSuite().getName();
+	    System.out.println("Suite Name: " + System.getProperty("testphase"));
 	}
 	
 	@BeforeMethod
-	public void nameBefore(Method method)
+	public void nameBefore(Method method) throws Throwable
 	{
-		testngtestmethod = method.getName();
-	    System.out.println("Test name: " + method.getName());       
+		System.out.println("Before Method");
+		
+		Random rand = new Random();
+
+		// nextInt as provided by Random is exclusive of the top value so you need to add 1 
+		
+		int randomNum = generaterandomnumber(1000, 10000);
+		Thread.currentThread().sleep(randomNum);
+		System.out.println("wait started:" + randomNum);
+		
+		//Invoke the browser
+		invoke();
+		
+		signuppage = new SignUpPage(BrowserFactory.getInstance().getDriver());
+		signinpage = new SignInPage(BrowserFactory.getInstance().getDriver());
+		firstloginpage = new FirstLoginPage(BrowserFactory.getInstance().getDriver());
+		
+		System.out.println("current thread:" + Thread.currentThread().getId() + "driver intance" + BrowserFactory.getInstance().getDriver() );
+		
+		System.out.println("Test name: " + method.getName());       
 	}
 	
-	@Test(dataProvider="registrationdata")
+	@Test(dataProviderClass=TestCaseData.class, dataProvider="testdata")
 	public void TC_appregistration_positiveflow(Map<String, String> data) throws Throwable {
+	    
 		String testname = data.get("TestName");
 		String firstname = data.get("FirstName");
 		String lastname = data.get("LastName");
@@ -69,7 +92,8 @@ public class Register extends TestBase {
 		if(testname==null) {
 			return;
 		}
-		test = extent.createTest(testname);
+		
+		extenttestinitialize(testname);
 		
 		if(emailid.isEmpty()) {
 			emailid = getAlphaNumericString(10) + "@gmail.com";
@@ -130,6 +154,7 @@ public class Register extends TestBase {
 			
 			//click login after confirmation
 			signuppage.clickloginafterregister();
+			hardwait(3000);
 			
 			//enter Login and password
 			signinpage.enterusername(emailid);
@@ -151,8 +176,9 @@ public class Register extends TestBase {
 		}
 	}
 	
-	@Test(dataProvider="registrationdata")
+	@Test(dataProviderClass=TestCaseData.class, dataProvider="testdata")
 	public void TC_appregistration_negativeflow(Map<String, String> data) throws Throwable {
+				
 		String testname = data.get("TestName");
 		String firstname = data.get("FirstName");
 		String lastname = data.get("LastName");
@@ -164,7 +190,7 @@ public class Register extends TestBase {
 		if(testname==null) {
 			return;
 		}
-		test = extent.createTest(testname);
+		extenttestinitialize(testname);
 		
 		if(emailid.isEmpty()) {
 			emailid = getAlphaNumericString(10) + "@gmail.com";
@@ -184,7 +210,7 @@ public class Register extends TestBase {
 		}else{
 		    signuppage.clickwearemusicschool();
 		}
-		hardwait(2000);
+		System.out.println("active thread:" + Thread.currentThread().getId());
 		
 		//enter registration details
 		signuppage.enterfirstname(firstname);
@@ -235,6 +261,16 @@ public class Register extends TestBase {
 		
 		//back to home
 		signuppage.clicklogoimage();
+		
+	}
+	
+	@AfterMethod
+	public void closebrowser() {
+		System.out.println("After method");
+//		extent.flush();
+//		extent.endTest(test);
+		BrowserFactory.getInstance().removeDriver();
+		
 	}
 	
 	@AfterTest
@@ -242,17 +278,11 @@ public class Register extends TestBase {
 		System.out.println("after test complete");
 	}
 	
-	@DataProvider(name="registrationdata")
-	public Object[][] getregisterinput(Method m) throws Throwable {
-		Object data[][] = getExcelData(testngtestname, m.getName());
-		return data;
-	}
-	
 	@AfterClass
-	public void closebrowser() {
+	public void extentflush() {
 		extent.flush();
 //		extent.endTest(test);
-		driver.close();
+//		driver.close();
 		
 	}
 	

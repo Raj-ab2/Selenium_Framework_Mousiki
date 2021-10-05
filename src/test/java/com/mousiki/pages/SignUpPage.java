@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.mousiki.testbase.TestBase;
 
-public class SignUpPage {
+public class SignUpPage extends TestBase {
 	/*signup page webelements
 	 * signup page webelement names
 	 * functionality on webelements
@@ -58,6 +58,7 @@ public class SignUpPage {
 	
 	public SignUpPage(WebDriver driver) {
 		this.driver = driver;
+		System.out.println("setting driver in signup page:"+ this.driver);
 	}
 	
 	public String getTitle() {
@@ -73,94 +74,94 @@ public class SignUpPage {
 	}
 	
 	public void enterfirstname(String firstname) throws Throwable {
-		TestBase.entertext(driver, firstnametxt, firstname, firstnametxtnm);
+		entertext(driver, firstnametxt, firstname, firstnametxtnm);
 	}
 	
 	public void enterlastname(String lastname) throws Throwable {
-		TestBase.entertext(driver, lastnametxt, lastname, lastnametxtnm);
+		entertext(driver, lastnametxt, lastname, lastnametxtnm);
 	}
 	
 	public void enteremailid(String emailid) throws Throwable {
-		TestBase.entertext(driver, emailtxt, emailid, emailtxtnm);
+		entertext(driver, emailtxt, emailid, emailtxtnm);
 	}
 	
 	public void enterpassword(String password) throws Throwable {
-		TestBase.entertext(driver, passwordtxt, password, passwordtxtnm);
+		entertext(driver, passwordtxt, password, passwordtxtnm);
 		
-		TestBase.waitforelementvisible(driver, 30, registerbtn);
+		waitforelementvisible(driver, 30, registerbtn);
 	}
 	
 	public void clicksignup() throws Throwable {
-		TestBase.click(driver, signuplink, signuplinknm);
+		click(driver, signuplink, signuplinknm);
 		
-		TestBase.waitforelementvisible(driver, 30, imstudentlink);
+		waitforelementvisible(driver, 30, imstudentlink);
 	}
 	
 	public void clicklogoimage() throws Throwable {
-		TestBase.click(driver, logoimg, logoimgnm);
+		click(driver, logoimg, logoimgnm);
 	}
 	
 	public void clickregister() throws Throwable {
-		TestBase.click(driver, registerbtn, registerbtnnm);
+		click(driver, registerbtn, registerbtnnm);
 	}
 	
 	public void clickloginafterregister() throws Throwable {
-		TestBase.click(driver, confirmregloginlink, confirmregloginlinknm);
+		click(driver, confirmregloginlink, confirmregloginlinknm);
 	}
 	
 	public void clickimparent() throws Throwable {
-		TestBase.click(driver, imparentlink, imparentlinknm);
+		click(driver, imparentlink, imparentlinknm);
 		
-		TestBase.waitforelementvisible(driver, 30, firstnametxt);
+		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
 	public void clickimstudent() throws Throwable {
-		TestBase.click(driver, imstudentlink, imstudentlinknm);
+		click(driver, imstudentlink, imstudentlinknm);
 		
-		TestBase.waitforelementvisible(driver, 30, firstnametxt);
+		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
 	public void clickimteacher() throws Throwable {
-		TestBase.click(driver, imteacherlink, imteacherlinknm);
+		click(driver, imteacherlink, imteacherlinknm);
 		
-		TestBase.waitforelementvisible(driver, 30, firstnametxt);
+		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
 	public void clickwearemusicschool() throws Throwable {
-		TestBase.click(driver, wermusicschoollink, wermusicschoollinknm);
+		click(driver, wermusicschoollink, wermusicschoollinknm);
 		
-		TestBase.waitforelementvisible(driver, 30, firstnametxt);
+		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
 	public boolean checkforregistercompletion() throws Throwable {
 				
-		return TestBase.checkelementexists(driver, 30, registercompletionmsg);
+		return checkelementexists(driver, 30, registercompletionmsg);
 	}
 	
 	public boolean checkforregisterconfirmation() throws Throwable {
 		
-		return TestBase.checkelementexists(driver, 30, confirmregloginlink);
+		return checkelementexists(driver, 30, confirmregloginlink);
 	}
 	
 	public boolean checkemptyfirstname() throws Throwable {
 		
-		return TestBase.checkelementexists(driver, 5, emptyfirstnameerr);
+		return checkelementexists(driver, 5, emptyfirstnameerr);
 	}
 	
 	public boolean checkemptylastname() throws Throwable {
 		
-		return TestBase.checkelementexists(driver, 5, emptylastnameerr);
+		return checkelementexists(driver, 5, emptylastnameerr);
 	}
 	
 	public boolean checkemptyemail() throws Throwable {
 		
-		return TestBase.checkelementexists(driver, 5, emptyemailerr);
+		return checkelementexists(driver, 5, emptyemailerr);
 	}
 	
 	public boolean checkpassworderror(String experrormsg) throws Throwable {
 		
-		if(TestBase.checkelementexists(driver, 5, passworderr)) {
-			if(TestBase.getelementtext(driver, passworderr, "pasworderrormessage").contains(experrormsg)) {
+		if(checkelementexists(driver, 5, passworderr)) {
+			if(getelementtext(driver, passworderr, "pasworderrormessage").contains(experrormsg)) {
 				return true;
 			}else {
 				return false;
@@ -170,10 +171,10 @@ public class SignUpPage {
 	}
 	
 	public boolean checkinvalidfield(String experrormsg) throws Throwable {
-		if(TestBase.checkelementexists(driver, 5, invalidfielderr)) {
-			System.out.println("**EXP:"+TestBase.getelementtext(driver, invalidfielderr, "customerrormessage"));
+		if(checkelementexists(driver, 5, invalidfielderr)) {
+			System.out.println("**EXP:"+getelementtext(driver, invalidfielderr, "customerrormessage"));
 			System.out.println("**ACT:"+experrormsg);
-			if(TestBase.getelementtext(driver, invalidfielderr, "customerrormessage").contains(experrormsg)) {
+			if(getelementtext(driver, invalidfielderr, "customerrormessage").contains(experrormsg)) {
 				return true;
 			}else {
 				return false;

@@ -7,7 +7,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.mousiki.testbase.TestBase;
 
-public class SignInPage {
+
+public class SignInPage extends TestBase {
 	/*signinpage objects
 	 * signinpage objects name
 	 * functions on object functionality
@@ -21,6 +22,12 @@ public class SignInPage {
 	By emailtxt = By.xpath("//*[@id='username']");
 	By passwordtxt = By.xpath("//*[@id='password']");
 	By loginbtn = By.xpath("//*[@type='submit']");
+	
+	By loginerrormsg = By.xpath("//div[@class='custom-error-message']");
+	By loginlockerrormsg = By.xpath("//div[@class='custom-error-message' and contains(.,'Too many failed attempt to login. Please wait for few minutes before retrying.')]");
+	By blankemailerrormsg = By.xpath("//div[contains(.,'Please provide a valid email') and @class='input-feedback']");
+	By blankpassworderrormsg = By.xpath("//div[contains(.,'Please provide a valid password') and @class='input-feedback']");
+	By invoicesummtxt = By.xpath("//h5[contains(.,'Invoice Summary')]");
 	
 	By confirmtimezonedialog = By.xpath("//h4[contains(.,'Confirm TimeZone')]");
 	By confirmtimezonedialogclose = By.xpath("//h4[contains(.,'Confirm TimeZone')]/following-sibling::button[1]");
@@ -50,29 +57,48 @@ public class SignInPage {
 		return signinurlexpected;
 	}
 	public void enterusername(String username) throws IOException {
-		TestBase.entertext(driver, emailtxt, username, emailtxtnm);
+		entertext(driver, emailtxt, username, emailtxtnm);
 	}
 	
 	public void enterpassword(String password) throws IOException {
-		TestBase.entertext(driver, passwordtxt, password, passwordtxtnm);
+		entertext(driver, passwordtxt, password, passwordtxtnm);
 	}
 	
 	public void clickloginbutton() throws IOException {
-		TestBase.click(driver, loginbtn, loginbtnnm);
+		click(driver, loginbtn, loginbtnnm);
 	}
 	
 	public void clicksigninlink() throws IOException {
-		TestBase.click(driver, signinlink, signinlinknm);
+		click(driver, signinlink, signinlinknm);
 		
-		TestBase.waitforelementvisible(driver, 30, emailtxt);
+		waitforelementvisible(driver, 30, emailtxt);
 	}
 	
 	public boolean checkconfirmtimezonedialog() throws IOException {
-		return TestBase.checkelementexists(driver, 30, confirmtimezonedialog);
+		return checkelementexists(driver, 30, confirmtimezonedialog);
 	}
 	
 	public void closeconfirmtimezonedialog() throws IOException {
-		TestBase.click(driver, confirmtimezonedialogclose, confirmtimezonedialogclosenm);
+		click(driver, confirmtimezonedialogclose, confirmtimezonedialogclosenm);
 	}
 	
+	public boolean checkhomepage() throws IOException{
+		return checkelementexists(driver, 30, invoicesummtxt);
+	}
+	
+	public boolean checkloginerrormsg() throws IOException{
+		return checkelementexists(driver, 30, loginerrormsg);		
+	}
+	
+	public boolean checkloginlockerrormsg() throws IOException{
+		return checkelementexists(driver, 30, loginlockerrormsg);		
+	}
+	
+	public boolean checkblankemailerrormsg() throws IOException{
+		return checkelementexists(driver, 30, blankemailerrormsg);		
+	}
+	
+	public boolean checkblankpassworderrormsg() throws IOException{
+		return checkelementexists(driver, 30, blankpassworderrormsg);		
+	}
 }
