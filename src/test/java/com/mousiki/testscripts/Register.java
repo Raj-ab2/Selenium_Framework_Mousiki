@@ -136,7 +136,7 @@ public class Register extends TestBase {
 			reportlog("Registration verification link not available", "FAIL", "Registration verification");
 			
 		}else {
-			System.out.println("Verification Link: " + dbdata[0][0]);
+			System.out.println("Verification Link: " + dbdata[0][0]); 
 			continueexe = true;
 		}
 		
