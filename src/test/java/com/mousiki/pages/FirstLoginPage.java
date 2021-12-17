@@ -30,7 +30,7 @@ public class FirstLoginPage extends TestBase {
 	By invoicesummtxt = By.xpath("//h5[contains(.,'Invoice Summary')]");
 
 	By phonenotxt = By.xpath("//input[@id='phoneNumber']");
-	By dateofbirthtxt = By.xpath("//input[@id='dateOfBirth']");
+	By dateofbirthtxt = By.xpath("//input[@name='dateOfBirth']");
 	By profilepictxt = By.xpath("//input[@placeholder='Upload your file']");
 	By schoolnametxt = By.xpath("//input[@id='name']");
 	By address1txt = By.xpath("//input[@id='address1']");

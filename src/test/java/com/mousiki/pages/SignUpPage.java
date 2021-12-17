@@ -93,7 +93,7 @@ public class SignUpPage extends TestBase {
 	
 	public void clicksignup() throws Throwable {
 		click(driver, signuplink, signuplinknm);
-		
+		waitForLoad(driver);
 		waitforelementvisible(driver, 30, imstudentlink);
 	}
 	
@@ -103,33 +103,35 @@ public class SignUpPage extends TestBase {
 	
 	public void clickregister() throws Throwable {
 		click(driver, registerbtn, registerbtnnm);
+		waitForLoad(driver);
 	}
 	
 	public void clickloginafterregister() throws Throwable {
 		click(driver, confirmregloginlink, confirmregloginlinknm);
+		waitForLoad(driver);
 	}
 	
 	public void clickimparent() throws Throwable {
 		click(driver, imparentlink, imparentlinknm);
-		
+		waitForLoad(driver);
 		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
 	public void clickimstudent() throws Throwable {
 		click(driver, imstudentlink, imstudentlinknm);
-		
+		waitForLoad(driver);
 		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
 	public void clickimteacher() throws Throwable {
 		click(driver, imteacherlink, imteacherlinknm);
-		
+		waitForLoad(driver);
 		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	
 	public void clickwearemusicschool() throws Throwable {
 		click(driver, wermusicschoollink, wermusicschoollinknm);
-		
+		waitForLoad(driver);
 		waitforelementvisible(driver, 30, firstnametxt);
 	}
 	

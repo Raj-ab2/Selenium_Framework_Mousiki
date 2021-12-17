@@ -100,6 +100,7 @@ public class Register extends TestBase {
 		}
 		//click signup page
 		signuppage.clicksignup();
+		hardwait(10000);
 		
 		//check registration option
 		if(registeroption.equalsIgnoreCase("parent")) {
@@ -126,11 +127,13 @@ public class Register extends TestBase {
 		}else {
 			reportlog("Registration Failed due to error", "FAIL", "Registration");
 		}
+		hardwait(1000);
 		
 		boolean continueexe = false;
 
 		//get confirmation link from DB
 		String query = "Select verifi_link from user where email = '" + emailid + "'";
+		System.out.println("query-"+query);
 		String dbdata[][] = getDBValues(query);
 		if(dbdata==null) {
 			reportlog("Registration verification link not available", "FAIL", "Registration verification");

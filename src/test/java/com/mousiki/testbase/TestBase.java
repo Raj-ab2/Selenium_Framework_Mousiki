@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,6 +42,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.TestNG;
@@ -263,6 +265,11 @@ public class TestBase {
 			
 	}
 	
+	public void waitForLoad(WebDriver driver) {
+	    new WebDriverWait(driver, 60).until((ExpectedCondition<Boolean>) wd ->
+	            ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+	}
+	
 	/**
 	 * method to enter text in textbox using webdriver and element locator
 	 * @param driver
@@ -289,6 +296,7 @@ public class TestBase {
 	 * @param driver
 	 * @param timeout
 	 * @param ElementLocator
+	 * @throws InterruptedException 
 	 */
 	public static void waitforelementvisible(WebDriver driver, int timeout, By ElementLocator) {
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
@@ -349,20 +357,21 @@ public class TestBase {
 	public static String[][] getDBValues(String query){
 		String rn[][] = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");  
+			Class.forName("com.mysql.cj.jdbc.Driver");  
 			String hostname = prop.getProperty("DBHostname");
 			String username = prop.getProperty("DBUsername");
 			String password = prop.getProperty("DBPassword");
-			
+			System.out.println("hostname-" + hostname + ", username-" + username + ", password-" +password );
 			Connection con=DriverManager.getConnection(  
 					hostname,username,password);  
 			
 			/*Statement stmt=con.createStatement();  
-			ResultSet rs=stmt.executeQuery(query);  */
+			ResultSet rs=stmt.executeQuery(query);*/  
 			
 			//alternate method to overcome type forward only exception
 			PreparedStatement pstat = con.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = pstat.executeQuery();
+			System.out.println("execute query");
 			
 			//retrieve row count
 			rs.last();
@@ -390,6 +399,7 @@ public class TestBase {
 				return null;
 			}
 		}catch(Exception e) {
+			System.out.println("exception:"+ e.getMessage());
 			return null;
 		}
 		
