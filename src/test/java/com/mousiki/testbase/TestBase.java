@@ -105,7 +105,7 @@ public class TestBase {
 	public void properties() throws IOException {
 		prop = new Properties();
 //		fis = new FileInputStream(System.getProperty("user.dir") + "\\src\\test\\java\\com\\mousiki\\config\\config.properties");
-		fis = new FileInputStream(System.getProperty("user.dir") + "/src/test/java/com/mousiki/config/config.properties");
+		fis = new FileInputStream(System.getProperty("user.dir") + File.pathSeparator +"src"+ File.pathSeparator +"test"+ File.pathSeparator +"java"+ File.pathSeparator +"com"+ File.pathSeparator +"mousiki"+ File.pathSeparator +"config"+ File.pathSeparator +"config.properties");
 		prop.load(fis);
 		System.out.println("property file data:" + prop);
 		
@@ -418,7 +418,7 @@ public class TestBase {
 		DataFormatter format = new DataFormatter();
 		
 		//create file for datasheet
-		FileInputStream tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		FileInputStream tsdata = new FileInputStream(System.getProperty("user.dir") + File.pathSeparator +"excelinput"+ File.pathSeparator +"TestData.xlsx");
 		
 		//create workbook and worksheet
 		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
