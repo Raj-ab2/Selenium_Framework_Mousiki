@@ -32,11 +32,11 @@ public class BrowserFactory {
 	         // can be replaced with other browser drivers
 	         if(System.getProperty("browsername").equalsIgnoreCase("CHROME")) {
 	        	WebDriverManager.chromedriver().setup();
-				ChromeOptions options = new ChromeOptions();
+				/*ChromeOptions options = new ChromeOptions();
 				options.addArguments("--incognito");
 				DesiredCapabilities cap = new DesiredCapabilities().chrome();
-				cap.setCapability(ChromeOptions.CAPABILITY, options);	
-				return new ChromeDriver(cap);
+				cap.setCapability(ChromeOptions.CAPABILITY, options);*/	
+				return new ChromeDriver();
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
 				FirefoxOptions fp = new FirefoxOptions();
