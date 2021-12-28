@@ -89,6 +89,7 @@ public class TestBase {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
 		extent = new ExtentReports();
+		System.out.println("User directory - "+System.getProperty("user.dir"));
 		ExtentSparkReporter spark = new ExtentSparkReporter(System.getProperty("user.dir") + "\\testreport\\" + "report" + formatter.format(cal.getTime()) + ".html");
 		extent.attachReporter(spark);
 		spark.config().setTheme(Theme.DARK);
