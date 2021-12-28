@@ -33,12 +33,15 @@ public class BrowserFactory {
 	         if(System.getProperty("browsername").equalsIgnoreCase("CHROME")) {
 	        	//WebDriverManager.chromedriver().setup();
 	        	WebDriverManager.chromedriver().driverVersion("96.0.4664.45").setup();
+    			//driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options = chrome_options);
 				/*ChromeOptions options = new ChromeOptions();
 				options.addArguments("--incognito");
 				DesiredCapabilities cap = new DesiredCapabilities().chrome();
 				cap.setCapability(ChromeOptions.CAPABILITY, options);*/	
 	        	ChromeOptions options = new ChromeOptions();
 	        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+	        	options.addArguments("--headless");
+	        	options.addArguments("--no-sandbox");
 				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
