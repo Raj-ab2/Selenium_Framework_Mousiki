@@ -666,7 +666,7 @@ public class TestBase {
 	public static Object[][] getExcelData(String sheetname, String testname, String testphase) throws Throwable{
 		//create file for datasheet
 		FileInputStream tsdata;
-		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		tsdata = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") +"excelinput"+ System.getProperty("file.separator") +"TestData.xlsx");
 		
 		//create workbook and worksheet
 		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
