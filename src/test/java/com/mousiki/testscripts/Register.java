@@ -32,7 +32,7 @@ import com.mousiki.pages.SignUpPage;
 import com.mousiki.testbase.BrowserFactory;
 import com.mousiki.testbase.TestBase;
 
-import oracle.jrockit.jfr.events.DynamicValueDescriptor;
+//import oracle.jrockit.jfr.events.DynamicValueDescriptor;
 
 public class Register extends TestBase {
 	
