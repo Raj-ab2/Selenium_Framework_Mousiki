@@ -90,7 +90,7 @@ public class TestBase {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
 		extent = new ExtentReports();
 		System.out.println("User directory - "+System.getProperty("user.dir"));
-		ExtentSparkReporter spark = new ExtentSparkReporter(System.getProperty("user.dir") + "\\testreport\\" + "report" + formatter.format(cal.getTime()) + ".html");
+		ExtentSparkReporter spark = new ExtentSparkReporter(System.getProperty("user.dir") + System.getProperty("file.separator") +"testreport"+ System.getProperty("file.separator") + "report" + formatter.format(cal.getTime()) + ".html");
 		extent.attachReporter(spark);
 		spark.config().setTheme(Theme.DARK);
 		spark.config().setDocumentTitle("Mousiki Automation");
@@ -105,7 +105,7 @@ public class TestBase {
 	public void properties() throws IOException {
 		prop = new Properties();
 //		fis = new FileInputStream(System.getProperty("user.dir") + "\\src\\test\\java\\com\\mousiki\\config\\config.properties");
-		fis = new FileInputStream(System.getProperty("user.dir") + File.pathSeparator +"src"+ File.pathSeparator +"test"+ File.pathSeparator +"java"+ File.pathSeparator +"com"+ File.pathSeparator +"mousiki"+ File.pathSeparator +"config"+ File.pathSeparator +"config.properties");
+		fis = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") +"src"+ System.getProperty("file.separator") +"test"+ System.getProperty("file.separator") +"java"+ System.getProperty("file.separator") +"com"+ System.getProperty("file.separator") +"mousiki"+ System.getProperty("file.separator") +"config"+ System.getProperty("file.separator") +"config.properties");
 		prop.load(fis);
 		System.out.println("property file data:" + prop);
 		
@@ -418,7 +418,7 @@ public class TestBase {
 		DataFormatter format = new DataFormatter();
 		
 		//create file for datasheet
-		FileInputStream tsdata = new FileInputStream(System.getProperty("user.dir") + File.pathSeparator +"excelinput"+ File.pathSeparator +"TestData.xlsx");
+		FileInputStream tsdata = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") +"excelinput"+ System.getProperty("file.separator") +"TestData.xlsx");
 		
 		//create workbook and worksheet
 		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
