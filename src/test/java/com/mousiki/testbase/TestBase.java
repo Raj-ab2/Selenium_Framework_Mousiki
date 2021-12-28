@@ -104,7 +104,8 @@ public class TestBase {
 	@BeforeSuite
 	public void properties() throws IOException {
 		prop = new Properties();
-		fis = new FileInputStream(System.getProperty("user.dir") + "\\src\\test\\java\\com\\mousiki\\config\\config.properties");
+//		fis = new FileInputStream(System.getProperty("user.dir") + "\\src\\test\\java\\com\\mousiki\\config\\config.properties");
+		fis = new FileInputStream(System.getProperty("user.dir") + "/src/test/java/com/mousiki/config/config.properties");
 		prop.load(fis);
 		System.out.println("property file data:" + prop);
 		
