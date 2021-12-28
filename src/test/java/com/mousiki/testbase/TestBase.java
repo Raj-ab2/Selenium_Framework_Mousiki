@@ -104,7 +104,6 @@ public class TestBase {
 	@BeforeSuite
 	public void properties() throws IOException {
 		prop = new Properties();
-//		fis = new FileInputStream(System.getProperty("user.dir") + "\\src\\test\\java\\com\\mousiki\\config\\config.properties");
 		fis = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") +"src"+ System.getProperty("file.separator") +"test"+ System.getProperty("file.separator") +"java"+ System.getProperty("file.separator") +"com"+ System.getProperty("file.separator") +"mousiki"+ System.getProperty("file.separator") +"config"+ System.getProperty("file.separator") +"config.properties");
 		prop.load(fis);
 		System.out.println("property file data:" + prop);
@@ -473,7 +472,7 @@ public class TestBase {
 		//create screenshot file name
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
-		String screenshotpath = System.getProperty("user.dir") + "\\screenshots\\" + "RUN_" + formatter.format(cal.getTime()) + ".png";
+		String screenshotpath = System.getProperty("user.dir") + System.getProperty("file.separator") +"screenshots" + System.getProperty("file.separator") + "RUN_" + formatter.format(cal.getTime()) + ".png";
 		
 		//Convert webdriver to TakeScreenshot
 		File screenshotFile = ((TakesScreenshot) BrowserFactory.getInstance().getDriver()).getScreenshotAs(OutputType.FILE);
@@ -584,7 +583,7 @@ public class TestBase {
     	boolean validtestphase = false;
     	//create file for datasheet
 		FileInputStream tsdata;
-		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		tsdata = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "excelinput" + System.getProperty("file.separator") + "TestData.xlsx");
 		
 		//create workbook and worksheet
 		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
@@ -623,7 +622,7 @@ public class TestBase {
 		
 		//create file for datasheet
 		FileInputStream tsdata;
-		tsdata = new FileInputStream(System.getProperty("user.dir") + "\\excelinput\\TestData.xlsx");
+		tsdata = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + "excelinput" + System.getProperty("file.separator") + "TestData.xlsx");
 		
 		//create workbook and worksheet
 		XSSFWorkbook wb = new XSSFWorkbook(tsdata);
