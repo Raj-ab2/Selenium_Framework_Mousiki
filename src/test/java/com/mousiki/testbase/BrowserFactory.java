@@ -31,7 +31,8 @@ public class BrowserFactory {
 	    	  System.out.println("browser name from commad line"+ System.getProperty("browsername"));
 	         // can be replaced with other browser drivers
 	         if(System.getProperty("browsername").equalsIgnoreCase("CHROME")) {
-	        	WebDriverManager.chromedriver().setup();
+	        	//WebDriverManager.chromedriver().setup();
+	        	WebDriverManager.chromedriver().driverVersion("96.0.4664.45").setup();
 				/*ChromeOptions options = new ChromeOptions();
 				options.addArguments("--incognito");
 				DesiredCapabilities cap = new DesiredCapabilities().chrome();
