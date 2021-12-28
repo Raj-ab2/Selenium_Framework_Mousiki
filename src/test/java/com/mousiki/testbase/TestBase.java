@@ -94,7 +94,6 @@ public class TestBase {
 		spark.config().setTheme(Theme.DARK);
 		spark.config().setDocumentTitle("Mousiki Automation");
 		extent.attachReporter(spark);
-		extenttest = new ThreadLocal<ExtentTest>();
 	}
 	
 	/**
@@ -138,6 +137,7 @@ public class TestBase {
 		WebDriver driver = BrowserFactory.getInstance().getDriver();
 		driver.get(prop.getProperty("URL"));
 		driver.manage().window().maximize();
+		waitForLoad(driver);
 	}
 	
 	/**
@@ -190,6 +190,7 @@ public class TestBase {
 			WebElement ele = driver.findElement(ElementLocator);
 			if(ele.isDisplayed()) {
 				ele.click();
+				waitForLoad(driver);
 				reportlog(name + "clicked successfully", "INFO");
 			}
 		}catch(Exception e) {
@@ -197,6 +198,7 @@ public class TestBase {
 				WebElement ele = driver.findElement(ElementLocator);
 				JavascriptExecutor executor = (JavascriptExecutor)driver;
 				executor.executeScript("arguments[0].click();", ele);
+				waitForLoad(driver);
 			}catch(Exception f) {
 				reportlog("An exception occured while click for element " + name + " Exeception:" + f, "FAIL", "Click fail");
 			}
@@ -257,6 +259,7 @@ public class TestBase {
 			if(ele.isDisplayed()) {
 				ele.click();
 				ele.sendKeys(value);
+				waitForLoad(driver);
 				reportlog(name + "entered successfully", "INFO");
 			}
 		}catch(Exception e) {
@@ -283,6 +286,7 @@ public class TestBase {
 			WebElement ele = driver.findElement(ElementLocator);
 			if(ele.isDisplayed()) {
 				ele.sendKeys(value + Keys.ENTER);
+				waitForLoad(driver);
 				reportlog(name + "Selected successfully", "INFO");
 			}
 		}catch(Exception e) {
@@ -298,7 +302,7 @@ public class TestBase {
 	 * @param ElementLocator
 	 * @throws InterruptedException 
 	 */
-	public static void waitforelementvisible(WebDriver driver, int timeout, By ElementLocator) {
+	public void waitforelementvisible(WebDriver driver, int timeout, By ElementLocator) {
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(ElementLocator));
 	}
@@ -308,7 +312,7 @@ public class TestBase {
 	 * @param timeout
 	 * @throws InterruptedException
 	 */
-	public static void hardwait(int timeout) throws InterruptedException {
+	public void hardwait(int timeout) throws InterruptedException {
 		Thread.currentThread().sleep(timeout);
 	}
 	
@@ -333,9 +337,10 @@ public class TestBase {
 	 * @param ElementLocator
 	 * @return
 	 */
-	public static boolean checkelementexists(WebDriver driver, int timeout, By ElementLocator) {
+	public boolean checkelementexists(WebDriver driver, int timeout, By ElementLocator) {
 		boolean returnvalue = false;
 		try {
+			waitForLoad(driver);
 			waitforelementvisible(driver, timeout, ElementLocator);
 			
 			if(driver.findElement(ElementLocator).isDisplayed()) {
@@ -354,7 +359,7 @@ public class TestBase {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public static String[][] getDBValues(String query){
+	public String[][] getDBValues(String query){
 		String rn[][] = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");  
@@ -405,7 +410,7 @@ public class TestBase {
 		
 	}
 	
-	public static Object[][] getexcelinput(String sheetname, String testname){
+	public Object[][] getexcelinput(String sheetname, String testname){
 		try {
 		//declare data formatter
 		DataFormatter format = new DataFormatter();
@@ -478,6 +483,7 @@ public class TestBase {
 	
 	public void extenttestinitialize(String testname) {
 		test = extent.createTest(testname);
+		extenttest = new ThreadLocal<ExtentTest>();
 		extenttest.set(test);
 	}
 	
@@ -523,7 +529,7 @@ public class TestBase {
 	 * @param status
 	 * @throws IOException
 	 */
-	public static void reportlog(String stepdescription, String status) throws IOException {
+	public void reportlog(String stepdescription, String status) throws IOException {
 		/*if(status.equalsIgnoreCase("PASS")) {
 			test.pass(stepdescription);
 		}else if(status.equalsIgnoreCase("FAIL")) {
@@ -545,7 +551,7 @@ public class TestBase {
 	}
 	
 	// function to generate a random string of length n
-    public static String getAlphaNumericString(int n)
+    public String getAlphaNumericString(int n)
     {
   
         // chose a Character random from this String

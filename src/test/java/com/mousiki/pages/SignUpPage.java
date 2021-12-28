@@ -25,7 +25,7 @@ public class SignUpPage extends TestBase {
 	By emptyfirstnameerr = By.xpath("//div[@class='input-feedback'][contains(.,'First Name is required')]");
 	By emptylastnameerr = By.xpath("//div[@class='input-feedback'][contains(.,'Last Name is required')]");
 	By emptyemailerr = By.xpath("//div[@class='input-feedback'][contains(.,'Please provide a valid email')]");
-	By passworderr = By.xpath("//div/div[contains(@class,'input-feedback')]");
+	By passworderr = By.xpath("//div[@class='input-feedback'][contains(.,'Password')]");
 	By invalidfielderr = By.xpath("//div[@class='custom-error-message']");
 	
 	By logoimg = By.xpath("//img[@alt='Logo']");
@@ -163,6 +163,9 @@ public class SignUpPage extends TestBase {
 	public boolean checkpassworderror(String experrormsg) throws Throwable {
 		
 		if(checkelementexists(driver, 5, passworderr)) {
+			System.out.println("error exist");
+			System.out.println(getelementtext(driver, passworderr, "pasworderrormessage"));
+			System.out.println(experrormsg);
 			if(getelementtext(driver, passworderr, "pasworderrormessage").contains(experrormsg)) {
 				return true;
 			}else {

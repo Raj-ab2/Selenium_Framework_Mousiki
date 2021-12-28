@@ -100,7 +100,6 @@ public class Register extends TestBase {
 		}
 		//click signup page
 		signuppage.clicksignup();
-		hardwait(10000);
 		
 		//check registration option
 		if(registeroption.equalsIgnoreCase("parent")) {
