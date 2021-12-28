@@ -36,7 +36,9 @@ public class BrowserFactory {
 				options.addArguments("--incognito");
 				DesiredCapabilities cap = new DesiredCapabilities().chrome();
 				cap.setCapability(ChromeOptions.CAPABILITY, options);*/	
-				return new ChromeDriver();
+	        	ChromeOptions options = new ChromeOptions();
+	        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
 				FirefoxOptions fp = new FirefoxOptions();
