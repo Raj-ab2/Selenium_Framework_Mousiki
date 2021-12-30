@@ -92,8 +92,9 @@ public class TestBase {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
 		extent = new ExtentReports();
 		System.out.println("User directory - "+System.getProperty("user.dir"));
-		ExtentSparkReporter spark = new ExtentSparkReporter(System.getProperty("user.dir") + System.getProperty("file.separator") +"testreport"+ System.getProperty("file.separator") + "report" + formatter.format(cal.getTime()) + ".html");
-		System.out.println("report path-" + System.getProperty("user.dir") + System.getProperty("file.separator") +"testreport"+ System.getProperty("file.separator") + "report" + formatter.format(cal.getTime()) + ".html");
+//		ExtentSparkReporter spark = new ExtentSparkReporter(System.getProperty("user.dir") + System.getProperty("file.separator") +"testreport"+ System.getProperty("file.separator") + "report" + formatter.format(cal.getTime()) + ".html");
+		ExtentSparkReporter spark = new ExtentSparkReporter(System.getProperty("user.dir") + System.getProperty("file.separator") +"testreport"+ System.getProperty("file.separator") + "report" + ".html");
+		System.out.println("report path-" + System.getProperty("user.dir") + System.getProperty("file.separator") +"testreport"+ System.getProperty("file.separator") + "report" + ".html");
 		extent.attachReporter(spark);
 		spark.config().setTheme(Theme.DARK);
 		spark.config().setDocumentTitle("Mousiki Automation");
