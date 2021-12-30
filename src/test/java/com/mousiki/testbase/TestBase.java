@@ -476,13 +476,15 @@ public class TestBase {
 		//create screenshot file name
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
-		String screenshotpath = System.getProperty("user.dir") + System.getProperty("file.separator") +"screenshots" + System.getProperty("file.separator") + "RUN_" + formatter.format(cal.getTime()) + ".png";
+		String temp = formatter.format(cal.getTime());
+		String screenshotpath = System.getProperty("user.dir") + System.getProperty("file.separator") +"screenshots" + System.getProperty("file.separator") + "RUN_" + temp + ".png";
 		
 		//Convert webdriver to TakeScreenshot
 		File screenshotFile = ((TakesScreenshot) BrowserFactory.getInstance().getDriver()).getScreenshotAs(OutputType.FILE);
 		
 		FileUtils.copyFile(screenshotFile , new File(screenshotpath));
 		
+		screenshotpath = "https://test.mousiki.io/job/FIrstBuildTest/ws/screenshots/RUN_" + temp + ".png";
 		return screenshotpath;
 	}
 	
