@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -472,8 +474,9 @@ public class TestBase {
 		//create screenshot file name
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
-		String screenshotpath = System.getProperty("user.dir") + System.getProperty("file.separator") +"screenshots" + System.getProperty("file.separator") + "RUN_" + formatter.format(cal.getTime()) + ".png";
+		//String screenshotpath = System.getProperty("user.dir") + System.getProperty("file.separator") +"screenshots" + System.getProperty("file.separator") + "RUN_" + formatter.format(cal.getTime()) + ".png";
 		
+		String screenshotpath = "https://test.mousiki.io/job/FIrstBuildTest/ws/screenshots/RUN_" + formatter.format(cal.getTime()) + ".png";
 		//Convert webdriver to TakeScreenshot
 		File screenshotFile = ((TakesScreenshot) BrowserFactory.getInstance().getDriver()).getScreenshotAs(OutputType.FILE);
 		
