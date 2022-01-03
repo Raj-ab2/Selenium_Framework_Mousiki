@@ -226,7 +226,8 @@ public class TestBase {
 				ele.sendKeys(Keys.CONTROL + "a");
 				ele.sendKeys(Keys.DELETE);
 				ele.sendKeys(value);
-				reportlog(name + "entered successfully", "INFO");
+				String text = ele.getAttribute("value");
+				reportlog(name + " field entered '" + text +"' successfully", "INFO");
 			}
 		}catch(Exception e) {
 			reportlog("An exception occured while enter for element " + name + " Exeception:" + e, "FAIL", "Enter text fail");
