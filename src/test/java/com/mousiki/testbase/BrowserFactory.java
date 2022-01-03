@@ -39,9 +39,14 @@ public class BrowserFactory {
 				DesiredCapabilities cap = new DesiredCapabilities().chrome();
 				cap.setCapability(ChromeOptions.CAPABILITY, options);*/	
 	        	ChromeOptions options = new ChromeOptions();
-	        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
-	        	options.addArguments("--headless");
-	        	options.addArguments("--no-sandbox");
+	        	if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
+//		        	options.addArguments("--headless");
+		        	options.addArguments("start-maximized"); // open Browser in maximized mode
+		        	options.addArguments("disable-infobars"); // disabling infobars
+		        	options.addArguments("--disable-extensions"); // disabling extensions
+		        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+		        	options.addArguments("--no-sandbox"); // Bypass OS security model
+	        	}
 				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
