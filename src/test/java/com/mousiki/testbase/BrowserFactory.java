@@ -39,9 +39,9 @@ public class BrowserFactory {
 				DesiredCapabilities cap = new DesiredCapabilities().chrome();
 				cap.setCapability(ChromeOptions.CAPABILITY, options);*/	
 	        	ChromeOptions options = new ChromeOptions();
-	        	/*options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+	        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
 	        	options.addArguments("--headless");
-	        	options.addArguments("--no-sandbox");*/
+	        	options.addArguments("--no-sandbox");
 				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
