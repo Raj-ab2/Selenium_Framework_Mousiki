@@ -313,7 +313,7 @@ public class Register extends TestBase {
 			firstloginpage.selectgender(gender);
 			firstloginpage.enterphonenumber(phoneno);
 			firstloginpage.enterdateofbirth(dateofbirth);
-			firstloginpage.uploadprofilepic("C:\\temp.jpg");
+//			firstloginpage.uploadprofilepic("C:\\temp.jpg");
 			
 			firstloginpage.enterschoolname(schoolname);
 			firstloginpage.enteraddress1(address1);
@@ -321,7 +321,7 @@ public class Register extends TestBase {
 			firstloginpage.entercity(city);
 			firstloginpage.enterstate(state);
 			firstloginpage.enterpincode(pincode);
-			
+			System.out.println("school details updated");
 		}
 		firstloginpage.clickenablecheckbox();
 		firstloginpage.clickokbutton();

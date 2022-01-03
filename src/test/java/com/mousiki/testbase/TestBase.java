@@ -484,7 +484,9 @@ public class TestBase {
 		
 		FileUtils.copyFile(screenshotFile , new File(screenshotpath));
 		
-		screenshotpath = "https://test.mousiki.io/job/FIrstBuildTest/ws/screenshots/RUN_" + temp + ".png";
+		if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
+			screenshotpath = "https://test.mousiki.io/job/FIrstBuildTest/ws/screenshots/RUN_" + temp + ".png";
+		}
 		return screenshotpath;
 	}
 	
