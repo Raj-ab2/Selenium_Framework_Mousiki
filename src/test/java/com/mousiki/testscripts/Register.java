@@ -117,6 +117,8 @@ public class Register extends TestBase {
 		signuppage.enterlastname(lastname);
 		signuppage.enteremailid(emailid);
 		signuppage.enterpassword(password);
+		hardwait(3000);
+		reportlog("Registration Details entered sucessfully", "PASS", "Registration");	
 		
 		//Click register button
 		signuppage.clickregister();
@@ -199,6 +201,9 @@ public class Register extends TestBase {
 		}else if(emailid.equalsIgnoreCase("(EMPTY)")){
 			emailid = "";
 		}
+		System.out.println("email-"+emailid);
+		System.out.println("password-"+password);
+		
 		//click signup page
 		signuppage.clicksignup();
 		
@@ -219,6 +224,8 @@ public class Register extends TestBase {
 		signuppage.enterlastname(lastname);
 		signuppage.enteremailid(emailid);
 		signuppage.enterpassword(password);
+		hardwait(3000);
+		reportlog("Registration Details entered sucessfully", "PASS", "Registration");	
 		
 		//Click register button
 		signuppage.clickregister();
