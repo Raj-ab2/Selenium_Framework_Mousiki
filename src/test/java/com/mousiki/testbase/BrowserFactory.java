@@ -48,6 +48,11 @@ public class BrowserFactory {
 		        	options.addArguments("--disable-extensions"); // disabling extensions
 		        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
 		        	options.addArguments("--no-sandbox"); // Bypass OS security model
+		        	options.addArguments("--window-size=1920,1080");
+		        	options.addArguments("--disable-gpu");
+		        	options.setExperimentalOption("useAutomationExtension", false);
+		        	options.addArguments("--proxy-server='direct://'");
+		        	options.addArguments("--proxy-bypass-list=*");
 	        	}
 				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
