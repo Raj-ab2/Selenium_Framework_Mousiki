@@ -40,6 +40,8 @@ public class BrowserFactory {
 				cap.setCapability(ChromeOptions.CAPABILITY, options);*/	
 	        	ChromeOptions options = new ChromeOptions();
 	        	if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
+	        		// chrome binary location specified here
+	        		options.setBinary("/usr/bin/google-chrome");
 //		        	options.addArguments("--headless");
 		        	options.addArguments("start-maximized"); // open Browser in maximized mode
 		        	options.addArguments("disable-infobars"); // disabling infobars
