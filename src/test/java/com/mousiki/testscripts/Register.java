@@ -201,8 +201,6 @@ public class Register extends TestBase {
 		}else if(emailid.equalsIgnoreCase("(EMPTY)")){
 			emailid = "";
 		}
-		System.out.println("email-"+emailid);
-		System.out.println("password-"+password);
 		
 		//click signup page
 		signuppage.clicksignup();

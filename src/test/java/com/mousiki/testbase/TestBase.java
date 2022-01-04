@@ -372,7 +372,6 @@ public class TestBase {
 			String hostname = prop.getProperty("DBHostname");
 			String username = prop.getProperty("DBUsername");
 			String password = prop.getProperty("DBPassword");
-			System.out.println("hostname-" + hostname + ", username-" + username + ", password-" +password );
 			Connection con=DriverManager.getConnection(  
 					hostname,username,password);  
 			

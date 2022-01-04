@@ -33,13 +33,8 @@ public class BrowserFactory {
 	         if(System.getProperty("browsername").equalsIgnoreCase("CHROME")) {
 	        	//WebDriverManager.chromedriver().setup();
 	        	WebDriverManager.chromedriver().driverVersion("96.0.4664.45").setup();
-    			//driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options = chrome_options);
-				/*ChromeOptions options = new ChromeOptions();
-				options.addArguments("--incognito");
-				DesiredCapabilities cap = new DesiredCapabilities().chrome();
-				cap.setCapability(ChromeOptions.CAPABILITY, options);*/	
 	        	ChromeOptions options = new ChromeOptions();
-	        	if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
+	        	//if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
 	        		// chrome binary location specified here
 //	        		options.setBinary("/usr/bin/google-chrome");
 		        	options.addArguments("--headless");
@@ -53,13 +48,13 @@ public class BrowserFactory {
 		        	options.setExperimentalOption("useAutomationExtension", false);
 		        	options.addArguments("--proxy-server='direct://'");
 		        	options.addArguments("--proxy-bypass-list=*");
-	        	}
+	        	//}
 				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
 				FirefoxOptions fp = new FirefoxOptions();
-				String path = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
-				fp.setBinary(path);
+				/*String path = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+				fp.setBinary(path);*/
 				return new FirefoxDriver(fp);
 	         }else {
 	        	return null;
