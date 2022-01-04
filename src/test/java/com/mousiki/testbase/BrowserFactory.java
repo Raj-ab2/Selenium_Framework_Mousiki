@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -53,6 +54,10 @@ public class BrowserFactory {
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
 				FirefoxOptions fp = new FirefoxOptions();
+				FirefoxBinary firefoxBinary = new FirefoxBinary();
+				firefoxBinary.addCommandLineOptions("--headless");
+				firefoxBinary.addCommandLineOptions("--no-sandbox");
+				fp.setBinary(firefoxBinary);
 				/*String path = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
 				fp.setBinary(path);*/
 				return new FirefoxDriver(fp);
