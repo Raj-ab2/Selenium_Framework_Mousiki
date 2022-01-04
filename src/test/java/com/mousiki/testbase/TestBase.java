@@ -479,6 +479,9 @@ public class TestBase {
 		String temp = formatter.format(cal.getTime());
 		String screenshotpath = System.getProperty("user.dir") + System.getProperty("file.separator") +"screenshots" + System.getProperty("file.separator") + "RUN_" + temp + ".png";
 		
+		//wait for page load
+		waitForLoad(BrowserFactory.getInstance().getDriver());
+		
 		//Convert webdriver to TakeScreenshot
 		File screenshotFile = ((TakesScreenshot) BrowserFactory.getInstance().getDriver()).getScreenshotAs(OutputType.FILE);
 		
