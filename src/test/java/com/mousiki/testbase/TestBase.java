@@ -129,7 +129,7 @@ public class TestBase {
 	 */
 	public void invoke() throws IOException {
 		
-		System.out.println("browser name=" + prop.getProperty("browsername"));
+		System.out.println("browser name=" + System.getProperty("browsername"));
 		
 		/*invokeBrowser(prop.getProperty("browsername"));
 		try {
@@ -485,7 +485,10 @@ public class TestBase {
 		FileUtils.copyFile(screenshotFile , new File(screenshotpath));
 		
 		if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
-			screenshotpath = "https://test.mousiki.io/job/FIrstBuildTest/ws/screenshots/RUN_" + temp + ".png";
+			String jenkinsserver = System.getProperty("jenkinsserver");//"https://test.mousiki.io";
+			String jenkinsbuildname = System.getProperty("jenkinsbuild");//"MosuikiTestBuild";
+			screenshotpath = jenkinsserver + "/job/" + jenkinsbuildname + "/ws/screenshots/RUN_" + temp + ".png";
+//			screenshotpath = "https://test.mousiki.io/job/FIrstBuildTest/ws/screenshots/RUN_" + temp + ".png";
 		}
 		return screenshotpath;
 	}

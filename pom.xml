@@ -117,6 +117,14 @@
 							<name>browsername</name>
 							<value>chrome</value>
 						</property>
+						<property>
+							<name>jenkinsserver</name>
+							<value>https://test.mousiki.io</value>
+						</property>
+						<property>
+							<name>jenkinsbuild</name>
+							<value>MosuikiTestBuild</value>
+						</property>
 					</systemProperties>
 				</configuration>
 
