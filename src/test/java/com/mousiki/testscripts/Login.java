@@ -72,23 +72,9 @@ public class Login extends TestBase{
 		
 		extenttestinitialize(testname);
 		
-		//click signin link
-		signinpage.clicksigninlink();
+		//Click Signin and Login
+		app_Login(emailid, password);
 		
-		//check signin URL
-		String signinurl = signinpage.getcurrentURL();
-		if(signinurl.equalsIgnoreCase(signinpage.getexpectedsigninurl())) {
-			reportlog("navigated to signin page successfully", "INFO");
-		}else {
-			reportlog("failed to navigate sign in page. expected url is not matching:" + signinpage.getexpectedsigninurl(), "FAIL", "Signin navigation");
-		}
-		
-		//Enter email id, password and click login button
-		signinpage.enterusername(emailid);		
-		signinpage.enterpassword(password);
-		signinpage.clickloginbutton();
-		
-		//handle confirm timezone dialog
 		if(signinpage.checkconfirmtimezonedialog()) {
 			signinpage.closeconfirmtimezonedialog();
 		}
@@ -114,21 +100,8 @@ public class Login extends TestBase{
 		
 		extenttestinitialize(testname);
 		
-		//click signin link
-		signinpage.clicksigninlink();
-		
-		//check signin URL
-		String signinurl = signinpage.getcurrentURL();
-		if(signinurl.equalsIgnoreCase(signinpage.getexpectedsigninurl())) {
-			reportlog("navigated to signin page successfully", "INFO");
-		}else {
-			reportlog("failed to navigate sign in page. expected url is not matching:" + signinpage.getexpectedsigninurl(), "FAIL", "Signin navigation");
-		}
-		
-		//Enter email id, password and click login button
-		signinpage.enterusername(emailid);		
-		signinpage.enterpassword(password);
-		signinpage.clickloginbutton();
+		//Click Signin and Login
+		app_Login(emailid, password);
 		
 		if(signinpage.checkloginerrormsg()){
 			reportlog("Login shows error message for invalid login credentials as expected", "PASS", "Invalid Login");
@@ -151,21 +124,8 @@ public class Login extends TestBase{
 		
 		extenttestinitialize(testname);
 		
-		//click signin link
-		signinpage.clicksigninlink();
-		
-		//check signin URL
-		String signinurl = signinpage.getcurrentURL();
-		if(signinurl.equalsIgnoreCase(signinpage.getexpectedsigninurl())) {
-			reportlog("navigated to signin page successfully", "INFO");
-		}else {
-			reportlog("failed to navigate sign in page. expected url is not matching:" + signinpage.getexpectedsigninurl(), "FAIL", "Signin navigation");
-		}
-		
-		//Enter email id, password and click login button
-		signinpage.enterusername(emailid);		
-		signinpage.enterpassword(password);
-		signinpage.clickloginbutton();
+		//Click Signin and Login
+		app_Login(emailid, password);
 		
 		if(signinpage.checkblankemailerrormsg()){
 			reportlog("Login shows error message for blank email credentials as expected", "PASS", "Blank email");
@@ -188,21 +148,8 @@ public class Login extends TestBase{
 		
 		extenttestinitialize(testname);
 		
-		//click signin link
-		signinpage.clicksigninlink();
-		
-		//check signin URL
-		String signinurl = signinpage.getcurrentURL();
-		if(signinurl.equalsIgnoreCase(signinpage.getexpectedsigninurl())) {
-			reportlog("navigated to signin page successfully", "INFO");
-		}else {
-			reportlog("failed to navigate sign in page. expected url is not matching:" + signinpage.getexpectedsigninurl(), "FAIL", "Signin navigation");
-		}
-		
-		//Enter email id, password and click login button
-		signinpage.enterusername(emailid);		
-		signinpage.enterpassword(password);
-		signinpage.clickloginbutton();
+		//Click Signin and Login
+		app_Login(emailid, password);
 		
 		if(signinpage.checkblankpassworderrormsg()){
 			reportlog("Login shows error message for blank password credentials as expected", "PASS", "Blank password");
@@ -236,10 +183,9 @@ public class Login extends TestBase{
 			reportlog("failed to navigate sign in page. expected url is not matching:" + signinpage.getexpectedsigninurl(), "FAIL", "Signin navigation");
 		}
 		
-		//Enter email id, password and click login button
+//		Enter email id, password and click login button
 		signinpage.enterusername(emailid);		
 		signinpage.enterpassword(password);
-		
 		for(int counter = 0;counter < 6;counter++) {
 			signinpage.clickloginbutton();
 		}

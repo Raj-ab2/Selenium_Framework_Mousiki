@@ -769,12 +769,5 @@ public class TestBase {
 		signinpage.enterusername(emailid);		
 		signinpage.enterpassword(password);
 		signinpage.clickloginbutton();
-		
-		if(signinpage.checkhomepage()){
-			reportlog("Login completed sucessfully", "PASS", "Login");
-		}else {
-			reportlog("Login completed Unsucessfull", "FAIL", "Login");
-		}
-
 	}
 }
