@@ -230,39 +230,39 @@ public class Register extends TestBase {
 		
 		if(experror.contains("invalid")||experror.contains("Invalid")) {
 			if(signuppage.checkinvalidfield(experror)){
-				reportlog("Registration not completed for '" + experror + "' invalid data as expected", "PASS", experror);
+				reportlog("Expected Error message ('" + experror + "') is shown for invalid data as expected", "PASS", experror);
 			}else {
-				reportlog("Registration completed for '" + experror + "' invalid data", "FAIL", experror);
+				reportlog("Expected Error message ('" + experror + "') is not shown for invalid data", "FAIL", experror);
 			}
 		}else if(experror.contains("Password should")) {
 			if(signuppage.checkpassworderror(experror)){
-				reportlog("Registration not completed for '" + experror + "' invalid data as expected", "PASS", experror);
+				reportlog("Expected Error message ('" + experror + "') is shown for invalid data as expected", "PASS", experror);
 			}else {
-				reportlog("Registration completed for '" + experror + "' invalid data", "FAIL", experror);
+				reportlog("Expected Error message ('" + experror + "') is not shown for invalid data", "FAIL", experror);
 			}
 		}else if(experror.contains("empty first name")) {
 			if(signuppage.checkemptyfirstname()){
-				reportlog("Registration not completed for '" + experror + "' invalid data as expected", "PASS", experror);
+				reportlog("Expected Error message ('" + experror + "') is shown for invalid data as expected", "PASS", experror);
 			}else {
-				reportlog("Registration completed for '" + experror + "' invalid data", "FAIL", experror);
+				reportlog("Expected Error message ('" + experror + "') is not shown for invalid data", "FAIL", experror);
 			}
 		}else if(experror.contains("empty last name")) {
 			if(signuppage.checkemptylastname()){
-				reportlog("Registration not completed for '" + experror + "' invalid data as expected", "PASS", experror);
+				reportlog("Expected Error message ('" + experror + "') is shown for invalid data as expected", "PASS", experror);
 			}else {
-				reportlog("Registration completed for '" + experror + "' invalid data", "FAIL", experror);
+				reportlog("Expected Error message ('" + experror + "') is not shown for invalid data", "FAIL", experror);
 			}
 		}else if(experror.contains("empty email")) {
 			if(signuppage.checkemptyemail()){
-				reportlog("Registration not completed for '" + experror + "' invalid data as expected", "PASS", experror);
+				reportlog("Expected Error message ('" + experror + "') is shown for invalid data as expected", "PASS", experror);
 			}else {
-				reportlog("Registration completed for '" + experror + "' invalid data", "FAIL", experror);
+				reportlog("Expected Error message ('" + experror + "') is not shown for invalid data", "FAIL", experror);
 			}
 		}else if(experror.contains("empty password")) {
 			if(signuppage.checkpassworderror("Password is required")){
-				reportlog("Registration not completed for '" + experror + "' invalid data as expected", "PASS", experror);
+				reportlog("Expected Error message ('" + experror + "') is shown for invalid data as expected", "PASS", experror);
 			}else {
-				reportlog("Registration completed for '" + experror + "' invalid data", "FAIL", experror);
+				reportlog("Expected Error message ('" + experror + "') is not shown for invalid data", "FAIL", experror);
 			}
 		}
 		

@@ -54,6 +54,7 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.mousiki.pages.SignInPage;
 import com.mousiki.testscripts.Register;
 
 /*import com.relevantcodes.extentreports.ExtentReports;
@@ -221,10 +222,10 @@ public class TestBase {
 	public void entertext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
-			if(ele.isDisplayed()) {
-				ele.clear();
+			if(ele.isDisplayed()) {				
+				ele.clear();waitForLoad(driver);
 				ele.sendKeys(Keys.CONTROL + "a");
-				ele.sendKeys(Keys.DELETE);
+				ele.sendKeys(Keys.DELETE);waitForLoad(driver);
 				ele.sendKeys(value);
 				String text = ele.getAttribute("value");
 				reportlog(name + " field entered '" + text +"' successfully", "INFO");
@@ -748,5 +749,32 @@ public class TestBase {
 			data.add(format.formatCellValue(column));
 		}
 		return data;
+	}
+	
+	public void app_Login(String emailid, String password) throws IOException {
+		SignInPage signinpage = new SignInPage(BrowserFactory.getInstance().getDriver());
+		
+		//click signin link
+		signinpage.clicksigninlink();
+		
+		//check signin URL
+		String signinurl = signinpage.getcurrentURL();
+		if(signinurl.equalsIgnoreCase(signinpage.getexpectedsigninurl())) {
+			reportlog("navigated to signin page successfully", "INFO");
+		}else {
+			reportlog("failed to navigate sign in page. expected url is not matching:" + signinpage.getexpectedsigninurl(), "FAIL", "Signin navigation");
+		}
+		
+		//Enter email id, password and click login button
+		signinpage.enterusername(emailid);		
+		signinpage.enterpassword(password);
+		signinpage.clickloginbutton();
+		
+		if(signinpage.checkhomepage()){
+			reportlog("Login completed sucessfully", "PASS", "Login");
+		}else {
+			reportlog("Login completed Unsucessfull", "FAIL", "Login");
+		}
+
 	}
 }
