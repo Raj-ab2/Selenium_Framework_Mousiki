@@ -35,10 +35,10 @@ public class BrowserFactory {
 	        	//WebDriverManager.chromedriver().setup();
 	        	WebDriverManager.chromedriver().driverVersion("96.0.4664.45").setup();
 	        	ChromeOptions options = new ChromeOptions();
-	        	//if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
+	        	if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
 	        		// chrome binary location specified here
 //	        		options.setBinary("/usr/bin/google-chrome");
-//		        	options.addArguments("--headless");
+		        	options.addArguments("--headless");
 		        	options.addArguments("--incognito");
 		        	options.addArguments("start-maximized"); // open Browser in maximized mode
 		        	options.addArguments("disable-infobars"); // disabling infobars
@@ -50,7 +50,7 @@ public class BrowserFactory {
 		        	options.setExperimentalOption("useAutomationExtension", false);
 		        	options.addArguments("--proxy-server='direct://'");
 		        	options.addArguments("--proxy-bypass-list=*");
-	        	//}
+	        	}
 				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();
