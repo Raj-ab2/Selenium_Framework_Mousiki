@@ -33,24 +33,25 @@ public class BrowserFactory {
 	         // can be replaced with other browser drivers
 	         if(System.getProperty("browsername").equalsIgnoreCase("CHROME")) {
 	        	//WebDriverManager.chromedriver().setup();
-	        	WebDriverManager.chromedriver().driverVersion("96.0.4664.45").setup();
+	        	WebDriverManager.chromedriver().setup();
 	        	ChromeOptions options = new ChromeOptions();
 	        	if(System.getProperty("user.dir").indexOf("jenkins") > -1) {
 	        		// chrome binary location specified here
 //	        		options.setBinary("/usr/bin/google-chrome");
 		        	options.addArguments("--headless");
-		        	options.addArguments("--incognito");
-		        	options.addArguments("start-maximized"); // open Browser in maximized mode
-		        	options.addArguments("disable-infobars"); // disabling infobars
-		        	options.addArguments("--disable-extensions"); // disabling extensions
-		        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
-		        	options.addArguments("--no-sandbox"); // Bypass OS security model
-		        	options.addArguments("--window-size=1920,1080");
-		        	options.addArguments("--disable-gpu");
-		        	options.setExperimentalOption("useAutomationExtension", false);
-		        	options.addArguments("--proxy-server='direct://'");
-		        	options.addArguments("--proxy-bypass-list=*");
 	        	}
+	        	options.addArguments("--incognito");
+	        	options.addArguments("start-maximized"); // open Browser in maximized mode
+	        	options.addArguments("disable-infobars"); // disabling infobars
+	        	options.addArguments("--disable-extensions"); // disabling extensions
+	        	options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+	        	options.addArguments("--no-sandbox"); // Bypass OS security model
+	        	options.addArguments("--window-size=1920,1080");
+	        	options.addArguments("--disable-gpu");
+	        	options.setExperimentalOption("useAutomationExtension", false);
+	        	options.addArguments("--proxy-server='direct://'");
+	        	options.addArguments("--proxy-bypass-list=*");
+	        	
 				return new ChromeDriver(options);
 	         }else if(System.getProperty("browsername").equalsIgnoreCase("FIREFOX")) {
 	        	WebDriverManager.firefoxdriver().setup();

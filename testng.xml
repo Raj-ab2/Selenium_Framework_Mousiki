@@ -11,4 +11,9 @@
       <class name="com.mousiki.testscripts.Login"/>
       </classes>
   </test> <!-- Test --> 
+  <test name="MyAccount">
+  	  <classes>
+      <class name="com.mousiki.testscripts.MyAccount"/>
+      </classes>
+  </test> <!-- Test --> 
 </suite> <!-- Suite --> 

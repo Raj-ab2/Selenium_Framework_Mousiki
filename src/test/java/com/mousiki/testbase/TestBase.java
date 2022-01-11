@@ -54,6 +54,7 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.mousiki.pages.HomePage;
 import com.mousiki.pages.SignInPage;
 import com.mousiki.testscripts.Register;
 
@@ -226,7 +227,7 @@ public class TestBase {
 				ele.clear();waitForLoad(driver);
 				ele.sendKeys(Keys.CONTROL + "a");
 				ele.sendKeys(Keys.DELETE);waitForLoad(driver);
-				ele.sendKeys(value);
+				ele.sendKeys(value);waitForLoad(driver);
 				String text = ele.getAttribute("value");
 				reportlog(name + " field entered '" + text +"' successfully", "INFO");
 			}
@@ -243,6 +244,22 @@ public class TestBase {
 			if(ele.isDisplayed()) {
 				elementtext = ele.getText();
 				reportlog(name + "get text from element successfully", "INFO");
+			}
+			return elementtext;
+		}catch(Exception e) {
+			reportlog("An exception occured while enter for element " + name + " Exeception:" + e, "FAIL", "Enter text fail");
+			return elementtext;
+		}
+			
+	}
+	
+	public String getelementlinkaddress(WebDriver driver, By ElementLocator, String name) throws IOException {
+		String elementtext = "";
+		try {
+			WebElement ele = driver.findElement(ElementLocator);
+			if(ele.isDisplayed()) {
+				elementtext = ele.getAttribute("href");
+				reportlog(name + "get href from element successfully", "INFO");
 			}
 			return elementtext;
 		}catch(Exception e) {
@@ -751,6 +768,13 @@ public class TestBase {
 		return data;
 	}
 	
+	
+	/**
+	 * generic application login function
+	 * @param emailid
+	 * @param password
+	 * @throws IOException
+	 */
 	public void app_Login(String emailid, String password) throws IOException {
 		SignInPage signinpage = new SignInPage(BrowserFactory.getInstance().getDriver());
 		
@@ -769,5 +793,19 @@ public class TestBase {
 		signinpage.enterusername(emailid);		
 		signinpage.enterpassword(password);
 		signinpage.clickloginbutton();
+	}
+	
+	public void app_leftnavigation(String menuitems) throws IOException {
+		HomePage homepage = new HomePage(BrowserFactory.getInstance().getDriver());
+		
+		homepage.clickhamburgericon();
+		
+		String[] arrmenuitem = menuitems.split(";");
+		if (!homepage.checkmenulinkvisibility(arrmenuitem[0])) {
+			homepage.clickhamburgericon();
+		}
+		for(int menuindex = 0;menuindex<arrmenuitem.length; menuindex++) {
+			homepage.clickmenulink(arrmenuitem[menuindex]);
+		}
 	}
 }
