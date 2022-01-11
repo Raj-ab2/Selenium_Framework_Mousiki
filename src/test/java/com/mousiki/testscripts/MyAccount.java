@@ -80,7 +80,7 @@ public class MyAccount extends TestBase {
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Negative validation on Change password field, Check expected error - " + experrormsg);
 		
 		//Login application
 		app_Login(emailid, password);
@@ -126,7 +126,7 @@ public class MyAccount extends TestBase {
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Negative validation on Change password field, Check expected error - " + experrormsg);
 		
 		//Login application
 		app_Login(emailid, password);
@@ -171,7 +171,7 @@ public class MyAccount extends TestBase {
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Negative validation on Change password field, Check expected error - " + experrormsg);
 		
 		//Login application
 		app_Login(emailid, password);

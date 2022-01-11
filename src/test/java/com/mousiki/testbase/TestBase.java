@@ -227,6 +227,7 @@ public class TestBase {
 				ele.clear();waitForLoad(driver);
 				ele.sendKeys(Keys.CONTROL + "a");
 				ele.sendKeys(Keys.DELETE);waitForLoad(driver);
+				ele.click();waitForLoad(driver);
 				ele.sendKeys(value);waitForLoad(driver);
 				String text = ele.getAttribute("value");
 				reportlog(name + " field entered '" + text +"' successfully", "INFO");
@@ -516,6 +517,12 @@ public class TestBase {
 	
 	public void extenttestinitialize(String testname) {
 		test = extent.createTest(testname);
+		extenttest = new ThreadLocal<ExtentTest>();
+		extenttest.set(test);
+	}
+	
+	public void extenttestinitialize(String testname, String description) {
+		test = extent.createTest(testname, description);
 		extenttest = new ThreadLocal<ExtentTest>();
 		extenttest.set(test);
 	}

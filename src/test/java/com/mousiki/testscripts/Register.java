@@ -93,7 +93,7 @@ public class Register extends TestBase {
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Create a new User using registration - " + registeroption);
 		
 		if(emailid.isEmpty()) {
 			emailid = getAlphaNumericString(10) + "@gmail.com";
@@ -194,7 +194,7 @@ public class Register extends TestBase {
 		if(testname==null) {
 			return;
 		}
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Negative validation on Registration field for " + registeroption + ", Check expected error - " + experror);
 		
 		if(emailid.isEmpty()) {
 			emailid = getAlphaNumericString(10) + "@gmail.com";

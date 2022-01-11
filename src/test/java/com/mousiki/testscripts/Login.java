@@ -70,7 +70,7 @@ public class Login extends TestBase{
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Check Login is working for valid user id and password");
 		
 		//Click Signin and Login
 		app_Login(emailid, password);
@@ -98,7 +98,7 @@ public class Login extends TestBase{
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Check login error message for Invalid login credentials");
 		
 		//Click Signin and Login
 		app_Login(emailid, password);
@@ -122,7 +122,7 @@ public class Login extends TestBase{
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Check error messages for blank login credentials");
 		
 		//Click Signin and Login
 		app_Login(emailid, password);
@@ -146,7 +146,7 @@ public class Login extends TestBase{
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Check error message for blank login password");
 		
 		//Click Signin and Login
 		app_Login(emailid, password);
@@ -170,7 +170,7 @@ public class Login extends TestBase{
 			return;
 		}
 		
-		extenttestinitialize(testname);
+		extenttestinitialize(testname, "Check multiple times error login attempts");
 		
 		//click signin link
 		signinpage.clicksigninlink();
