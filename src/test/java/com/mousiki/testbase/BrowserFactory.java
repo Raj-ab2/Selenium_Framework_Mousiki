@@ -48,7 +48,7 @@ public class BrowserFactory {
 	        	options.addArguments("--no-sandbox"); // Bypass OS security model
 	        	options.addArguments("--window-size=1920,1080");
 	        	options.addArguments("--disable-gpu");
-	        	options.setExperimentalOption("useAutomationExtension", false);
+//	        	options.setExperimentalOption("useAutomationExtension", false);
 	        	options.addArguments("--proxy-server='direct://'");
 	        	options.addArguments("--proxy-bypass-list=*");
 	        	

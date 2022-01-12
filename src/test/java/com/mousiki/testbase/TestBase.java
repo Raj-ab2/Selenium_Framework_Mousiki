@@ -195,7 +195,7 @@ public class TestBase {
 		try {
 			
 			WebElement ele = driver.findElement(ElementLocator);
-			if(ele.isDisplayed()) {
+			if(checkelementexists(driver, 20, ElementLocator)) {
 				ele.click();
 				waitForLoad(driver);
 				reportlog(name + "clicked successfully", "INFO");
@@ -242,7 +242,7 @@ public class TestBase {
 		String elementtext = "";
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
-			if(ele.isDisplayed()) {
+			if(checkelementexists(driver, 20, ElementLocator)) {
 				elementtext = ele.getText();
 				reportlog(name + "get text from element successfully", "INFO");
 			}
@@ -258,7 +258,7 @@ public class TestBase {
 		String elementtext = "";
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
-			if(ele.isDisplayed()) {
+			if(checkelementexists(driver, 20, ElementLocator)) {
 				elementtext = ele.getAttribute("href");
 				reportlog(name + "get href from element successfully", "INFO");
 			}
@@ -281,7 +281,7 @@ public class TestBase {
 	public void sendtext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
-			if(ele.isDisplayed()) {
+			if(checkelementexists(driver, 20, ElementLocator)) {
 				ele.click();
 				ele.sendKeys(value);
 				waitForLoad(driver);
@@ -309,7 +309,7 @@ public class TestBase {
 	public void selectlist(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
 			WebElement ele = driver.findElement(ElementLocator);
-			if(ele.isDisplayed()) {
+			if(checkelementexists(driver, 20, ElementLocator)) {
 				ele.sendKeys(value + Keys.ENTER);
 				waitForLoad(driver);
 				reportlog(name + "Selected successfully", "INFO");
@@ -760,7 +760,7 @@ public class TestBase {
 		  }catch(Exception e) {}
 		  results.put(key, value);
 		}
-		System.out.println(results);
+//		System.out.println(results);
 		return results;
 	}
 
