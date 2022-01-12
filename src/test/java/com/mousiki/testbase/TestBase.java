@@ -200,17 +200,25 @@ public class TestBase {
 				waitForLoad(driver);
 				reportlog(name + "clicked successfully", "INFO");
 			}
-		}catch(Exception e) {
-			try {
-				WebElement ele = driver.findElement(ElementLocator);
-				JavascriptExecutor executor = (JavascriptExecutor)driver;
-				executor.executeScript("arguments[0].click();", ele);
-				waitForLoad(driver);
-			}catch(Exception f) {
-				reportlog("An exception occured while click for element " + name + " Exeception:" + f, "FAIL", "Click fail");
+			}catch(Exception e) {
+				try {
+					WebElement ele = driver.findElement(ElementLocator);
+					JavascriptExecutor executor = (JavascriptExecutor)driver;
+					executor.executeScript("arguments[0].click();", ele);
+					waitForLoad(driver);
+				}catch(Exception f) {
+					try {
+						hardwait(5000);
+						WebElement ele = driver.findElement(ElementLocator);
+						JavascriptExecutor executor = (JavascriptExecutor)driver;
+						executor.executeScript("arguments[0].click();", ele);
+						waitForLoad(driver);
+					}catch(Exception h) {
+						reportlog("An exception occured while click for element " + name + " Exeception:" + f, "FAIL", "Click fail");
+					}
+				}
 			}
 		}
-	}
 	
 	/**
 	 * method to enter text in textbox using webdriver and element locator

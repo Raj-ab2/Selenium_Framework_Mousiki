@@ -186,8 +186,9 @@ public class Login extends TestBase{
 //		Enter email id, password and click login button
 		signinpage.enterusername(emailid);		
 		signinpage.enterpassword(password);
-		for(int counter = 0;counter < 6;counter++) {
+		for(int counter = 0;counter < 7;counter++) {
 			signinpage.clickloginbutton();
+			hardwait(2000);
 		}
 		
 		if(signinpage.checkloginlockerrormsg()){
