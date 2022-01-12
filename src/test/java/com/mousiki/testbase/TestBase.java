@@ -222,8 +222,8 @@ public class TestBase {
 	 */
 	public void entertext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
-			WebElement ele = driver.findElement(ElementLocator);
-			if(ele.isDisplayed()) {				
+			if(checkelementexists(driver, 20, ElementLocator)) {	
+				WebElement ele = driver.findElement(ElementLocator);
 				ele.clear();waitForLoad(driver);
 				ele.sendKeys(Keys.CONTROL + "a");
 				ele.sendKeys(Keys.DELETE);waitForLoad(driver);
