@@ -5,7 +5,7 @@
 	<groupId>com.selenium.java.project</groupId>
 	<artifactId>Selenium_Framework_Mousiki</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+	<!--Veena added-->
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
 		<dependency>
