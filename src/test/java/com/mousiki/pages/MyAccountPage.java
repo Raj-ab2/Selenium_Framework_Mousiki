@@ -22,11 +22,33 @@ public class MyAccountPage extends TestBase {
 	By submitbtn = By.xpath("//button[@id='submitBtn']");
 	By passworderr = By.xpath("//div[@class='input-feedback']");
 	By oldpassworderr = By.xpath("//div[@class='custom-error-message']");
+	By alertmsg = By.xpath("//div[@role='alert']/span");
+	By alertsucessmsg = By.xpath("//div[@role='alert']");
+	By fieldmsg = By.xpath("//div[@class='input-feedback']");
+	
 	
 	//defining element names
 	String oldpasswordtxtnm = "Old Password text box";
 	String newpasswordtxtnm = "New Password text box";
 	String submitbtnnm = "Submit button";
+	String alertmsgnm = "Fail message alert";
+	String alertsucessmsgnm = "Success message alert";
+	String fieldmsgnm = "field error message";
+	
+	public String getfielderrormsgtext() throws Throwable {
+		waitForLoad(driver);
+		return getelementtext(driver, fieldmsg, fieldmsgnm);
+	}
+	
+	public String getalertmsgtext() throws Throwable {
+		waitForLoad(driver);
+		return getelementtext(driver, alertmsg, alertmsgnm);
+	}
+	
+	public String getsuccessalertmsgtext() throws Throwable {
+		waitForLoad(driver);
+		return getelementtext(driver, alertsucessmsg, alertsucessmsgnm);
+	}
 	
 	public boolean checkcustompassworderror(String experrormsg) throws Throwable {
 		

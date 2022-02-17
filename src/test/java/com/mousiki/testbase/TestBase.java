@@ -249,8 +249,8 @@ public class TestBase {
 	public String getelementtext(WebDriver driver, By ElementLocator, String name) throws IOException {
 		String elementtext = "";
 		try {
-			WebElement ele = driver.findElement(ElementLocator);
 			if(checkelementexists(driver, 20, ElementLocator)) {
+				WebElement ele = driver.findElement(ElementLocator);
 				elementtext = ele.getText();
 				reportlog(name + "get text from element successfully", "INFO");
 			}
@@ -265,8 +265,8 @@ public class TestBase {
 	public String getelementlinkaddress(WebDriver driver, By ElementLocator, String name) throws IOException {
 		String elementtext = "";
 		try {
-			WebElement ele = driver.findElement(ElementLocator);
 			if(checkelementexists(driver, 20, ElementLocator)) {
+				WebElement ele = driver.findElement(ElementLocator);
 				elementtext = ele.getAttribute("href");
 				reportlog(name + "get href from element successfully", "INFO");
 			}
@@ -288,8 +288,8 @@ public class TestBase {
 	 */
 	public void sendtext(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
-			WebElement ele = driver.findElement(ElementLocator);
 			if(checkelementexists(driver, 20, ElementLocator)) {
+				WebElement ele = driver.findElement(ElementLocator);
 				ele.click();
 				ele.sendKeys(value);
 				waitForLoad(driver);
@@ -316,8 +316,8 @@ public class TestBase {
 	 */
 	public void selectlist(WebDriver driver, By ElementLocator, String value, String name) throws IOException {
 		try {
-			WebElement ele = driver.findElement(ElementLocator);
 			if(checkelementexists(driver, 20, ElementLocator)) {
+				WebElement ele = driver.findElement(ElementLocator);
 				ele.sendKeys(value + Keys.ENTER);
 				waitForLoad(driver);
 				reportlog(name + "Selected successfully", "INFO");

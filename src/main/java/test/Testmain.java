@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,11 @@ public class Testmain {
 	
 	public static void main(String[] args) throws Throwable {
 		// TODO Auto-generated method stub
-/*		try{  
+
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");  
+	    Date date = new Date();  
+	    System.out.println(formatter.format(date));  
+		/*		try{  
 			WebDriverManager.chromedriver().setup();
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--incognito");
