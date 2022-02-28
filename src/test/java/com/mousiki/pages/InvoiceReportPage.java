@@ -42,10 +42,11 @@ public class InvoiceReportPage extends TestBase {
 	public By summaryOverDueInv = By
 			.xpath("//div[@class='summary-info summary-info__due']//p[@class='summary-invoice__amt']");
 
-	public By fromDateCalInv_Xpath = By.xpath("//input[@name='fromDate']");
-	public By incorrectDateWarning_Xpath = By.xpath("//div[contains(@class,'input-feedback')]");
-	public By runReport_Xpath = By.xpath("//button[contains(@class,'ml-0 btn-primary btn-run-report')]");
-	public By calDatepicker_Xpath=By.xpath("//div[contains(@class,'react-datepicker__day react-datepicker__day--003 react-datepicker__day--selected')]");
+	public By fromDateCalInv_Xpath = By.xpath("(//input[@name='fromDate' and @placeholder='D/M/YYYY'])[1]");
+	public By incorrectDateWarning_Xpath = By.xpath("//div[normalize-space()='The end date should be greater than to start date']");
+	public By runReport_Xpath = By.xpath("(//button[normalize-space()='Run Report'])[1]");
+	public By calDatepicker_Xpath = By.xpath(
+			"//div[contains(@class,'react-datepicker__day react-datepicker__day--003 react-datepicker__day--selected')]");
 
 	// div[contains(@class,'form-left-fifth
 	// invoice-prefix')]//following-sibling::button[contains(.,'Run Report')]
@@ -71,12 +72,13 @@ public class InvoiceReportPage extends TestBase {
 	public String strDueDateInvText = "OverDueInvoice";
 	public String strRunReportText = "RunReport";
 	public String strIncorrectDateRangeWarn = "Warning Message";
-	public String strCalDateSelected="Selected Calendar date";
+	public String strCalDateSelected = "Selected Calendar date";
 
 	public String[] strExpHeaderList = { "Date", "Invoice No", "Customer", "Amount", "Balance", "Status", "Due Date" };
 	public String strIncorrectDateWarnMsg = "The end date should be greater than to start date";
 	public String fromDate = "02/02/2022";
-	public boolean invColHeaderValidation(String commonXpath, String colHeaderType) {
+
+	public boolean invColHeaderValidation(String commonXpath, String colHeaderType) throws IOException {
 		boolean bVal = false;
 		waitForLoad(driver);
 		String replacedxpath = commonXpath.replace("%s", strInvDate_Xpath_Text);
@@ -86,10 +88,10 @@ public class InvoiceReportPage extends TestBase {
 			String actualtxt = driver.findElement(By.xpath(replacedxpath)).getText();
 			for (String expHeaderValue : strExpHeaderList) {
 				if (actualtxt.equalsIgnoreCase(expHeaderValue)) {
-					System.out.println("Verified " + expHeaderValue + "section successfully");
+					reportlog("Verified " + expHeaderValue + "section successfully","PASS","Sections verified successfully");
 					bVal = true;
 				} else
-					System.out.println("Header values did not match");
+					reportlog("Header values did not match","FAIL","Headers are not matching");
 			}
 		}
 		return bVal;
@@ -104,37 +106,35 @@ public class InvoiceReportPage extends TestBase {
 		String overdueInvSummaryText = getelementtext(driver, summaryOverDueInv, strDueDateInvText);
 
 		if (openInvDashboardText.equalsIgnoreCase(openInvSummaryText)) {
-			System.out.println("Open Invoice amount displayed in Dashboard and summary are matching");
-			/*
-			 * } else { System.out.
-			 * println("Open Invoice amount displayed in Dashboard and summary are not matching"
-			 * ); }
-			 */
-
 			if (dueDateInvDashboardText.equalsIgnoreCase(overdueInvSummaryText)) {
-				System.out.println("OVerdue Invoice amount displayed in Dashboard and summary are matching");
+				reportlog("OVerdue Invoice amount displayed in Dashboard and summary are matching", "PASS",
+						"Overdue Invoice amount is matching");
 			} else {
-				System.out.println("Overdue Invoice amount displayed in Dashboard and summary are not matching");
+				reportlog("OVerdue Invoice amount displayed in Dashboard and summary are matching", "FAIL",
+						"Overdue Invoice amount is matching");
 			}
 			return true;
 		} else {
-			System.out.println("Open Invoice amount displayed in Dashboard and summary are not matching");
+			reportlog("Open Invoice amount displayed in Dashboard and summary are not matching", "FAIL",
+					"Amounts are not matching");
 		}
 		return false;
 
 	}
 
 	public boolean validateIncorrectInvDateRangeSelection() throws IOException {
-		//click(driver, fromDateCalInv_Xpath, strExpInvDateText);
+		// click(driver, fromDateCalInv_Xpath, strExpInvDateText);
 		entertext(driver, fromDateCalInv_Xpath, fromDate, strCalDateSelected);
 		waitForLoad(driver);
-		click(driver, runReport_Xpath, strRunReportText);
+		//click(driver, runReport_Xpath, strRunReportText);
+		driver.findElement(By.xpath("(//button[normalize-space()='Run Report'])[1]")).click();
+		reportlog("RunReport clicked successfully","PASS","Clicked RunReport");
 		String strActualWarning = getelementtext(driver, incorrectDateWarning_Xpath, strIncorrectDateRangeWarn);
 		if (strActualWarning.equalsIgnoreCase(strIncorrectDateWarnMsg)) {
-			System.out.println("Expected warning message displayed");
+			reportlog("Expected warning message displayed", "PASS", "Warning displayed");
 			return true;
 		} else {
-			System.out.println("Expected warning message is not displayed");
+			reportlog("Expected warning message not displayed", "FAIL", "No Warning displayed");
 		}
 		return false;
 

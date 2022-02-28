@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,7 +20,7 @@ public class AccountingPage extends TestBase {
 	// List of all WebElements in Accounting Page
 	public By studentDD_Xpath = By.xpath("//div[contains(@class,'css-1hwfws3')]/div[contains(.,'Student Name')]");
 	public By availableCourseCheckbx_Xpath = By.xpath("//label[contains(@class,'form-check-label')]");
-	public By invSave_Xpath = By.xpath("//button[contains(.,'Save')and contains(@class,'btn  ml-0 btn-primary')]");
+	public By invSave_Xpath = By.xpath("//button[contains(.,'Save')and contains(@class,'btn ml-0 btn-primary')]");
 	public By invCreatedMsg = By.xpath("//h2[contains(@class,'page-heading-title new-invoice')]");
 	public By reportsLabel_Xpath = By.xpath("//span[contains(.,'Reports')]");
 	public By invNoInReports_Xpath = By.xpath(
@@ -33,6 +34,7 @@ public class AccountingPage extends TestBase {
 			.xpath("//a[@class='collapsible-header Ripple-parent arrow-r active las leftnav__accounting']");
 	public By reports_Xpath = By.xpath("//span[normalize-space()='Reports']");
 	public By reportHeaderList_Xpath = By.xpath("//table[contains(@class,'template_tbl')]/thead/tr/td");
+	public By studentNotSelected_Xpath = By.xpath("//div[normalize-space()='Please select student']");
 
 	// List of all Strings to compare or enter in text field
 	public String strStudentName = "TestStudent QA";
@@ -44,6 +46,7 @@ public class AccountingPage extends TestBase {
 	public String strNavBar = "Navigation bar";
 	public String strAccountingLabel = "Accounting";
 	public String[] expectedListOfColHeaders = { "Description", "Qty", "Rate", "Discount", "Amount" };
+	public String strStudentNotSelectedTxt = "Please select student";
 
 	// List of webelement Strings
 	public String strStudentDDTxt = "Student Name";
@@ -53,12 +56,14 @@ public class AccountingPage extends TestBase {
 	}
 
 	public void createInvoice() throws IOException, InterruptedException {
-		//click(driver, studentDD_Xpath, strStudentDDTxt);
-		driver.findElement(By.xpath("//div[contains(@class,' css-1wa3eu0-placeholder') and contains(.,'Student Name') ]")).click();
+		// click(driver, studentDD_Xpath, strStudentDDTxt);
+		driver.findElement(
+				By.xpath("//div[contains(.,'Student Name') and contains(@class,' css-1wa3eu0-placeholder')]")).click();
 		Thread.sleep(10000);
 		reportlog("Clicked DD", "PASS", strStudentDDTxt);
 		if (checkelementexists(driver, 0, studentDD_Xpath)) {
-			driver.findElement(By.xpath("//div[contains(@class,'multiselect-option')]/div[contains(.,'TestStudent QA')]")).click();
+			driver.findElement(
+					By.xpath("//div[contains(@class,'multiselect-option')]/div[contains(.,'TestStudent QA')]")).click();
 			// reportlog("Selected student", "PASS", strStudentDDTxt);
 			/*
 			 * driver.findElement(ddValue_Xpath).sendKeys(Keys.ARROW_DOWN);
@@ -102,7 +107,7 @@ public class AccountingPage extends TestBase {
 		if (strActualInvNo.equalsIgnoreCase(trimedText)) {
 			System.out.println("ACtual inv.no is:" + strActualInvNo);
 		} else {
-			System.out.println("Invoice no is not matching");
+			reportlog("Invoice number is not matching", "FAIL", "Invoice not matching");
 		}
 
 	}
@@ -111,7 +116,35 @@ public class AccountingPage extends TestBase {
 		click(driver, invNoInReports_Xpath, strInvNoInReport);
 	}
 
-	public void validateInvoiceViewPage() throws InterruptedException {
+	public boolean checkStudentNotSelectedWarning(String experrormsg) throws Throwable {
+
+		if (checkelementexists(driver, 5, studentNotSelected_Xpath)) {
+			getelementtext(driver, studentNotSelected_Xpath, strStudentNotSelectedTxt);
+			System.out.println(experrormsg);
+			if (getelementtext(driver, studentNotSelected_Xpath, strStudentNotSelectedTxt).contains(experrormsg)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	public boolean clickOnSaveInv() throws IOException, InterruptedException {
+		
+		if(checkelementexists(driver, 5, invSave_Xpath)) {
+			click(driver, invSave_Xpath, strSaveBtn);
+			reportlog("Clicked On Save button", "PASS", "Clicked on Save");
+			return true;
+		}
+		else {
+			reportlog("Failed to click Save button", "FAIL", "Failed to click Save");
+		}
+		return false;
+		
+	}
+
+	public void validateInvoiceViewPage() throws InterruptedException, IOException {
 		Thread.sleep(10000);
 		List<WebElement> reportColHeaderList = driver.findElements(reportHeaderList_Xpath);
 		System.out.println(driver.findElement(reportHeaderList_Xpath).getAttribute("innerHTML"));
@@ -122,9 +155,9 @@ public class AccountingPage extends TestBase {
 			System.out.println(driver.findElement(reportHeader_Xpath).getAttribute("innerHTML"));
 			if ((driver.findElement(reportHeader_Xpath).getAttribute("innerHTML"))
 					.equalsIgnoreCase(expectedListOfColHeaders[k - 1])) {
-				System.out.println("Both are matching");
+				reportlog("Both are matching", "PASS", "Values are matching");
 			} else
-				System.out.println("Did not match");
+				reportlog("Values are not matching", "FAIL", "Values not matching");
 		}
 
 	}
