@@ -76,7 +76,7 @@ public class InvoiceReportPage extends TestBase {
 
 	public String[] strExpHeaderList = { "Date", "Invoice No", "Customer", "Amount", "Balance", "Status", "Due Date" };
 	public String strIncorrectDateWarnMsg = "The end date should be greater than to start date";
-	public String fromDate = "02/02/2022";
+	public String fromDate = "04/02/2022";
 
 	public boolean invColHeaderValidation(String commonXpath, String colHeaderType) throws IOException {
 		boolean bVal = false;
