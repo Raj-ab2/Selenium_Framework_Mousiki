@@ -17,6 +17,7 @@ import org.testng.annotations.Test;
 
 import com.mousiki.dataprovider.TestCaseData;
 import com.mousiki.pages.DashboardPage;
+import com.mousiki.pages.HomePage;
 import com.mousiki.pages.InvoiceReportPage;
 import com.mousiki.pages.SignInPage;
 import com.mousiki.testbase.BrowserFactory;
@@ -27,6 +28,7 @@ public class DashboardValidation extends TestBase {
 	DashboardPage dashbrd;
 	SignInPage signin;
 	InvoiceReportPage invoicepg;
+	HomePage homepg;
 
 	@BeforeClass
 	public void setup() throws IOException {
@@ -59,6 +61,7 @@ public class DashboardValidation extends TestBase {
 		signin = new SignInPage(BrowserFactory.getInstance().getDriver());
 		dashbrd = new DashboardPage(BrowserFactory.getInstance().getDriver());
 		invoicepg = new InvoiceReportPage(BrowserFactory.getInstance().getDriver());
+		homepg = new HomePage(BrowserFactory.getInstance().getDriver());
 		System.out.println("current thread:" + Thread.currentThread().getId() + "driver intance"
 				+ BrowserFactory.getInstance().getDriver());
 
@@ -262,8 +265,13 @@ public class DashboardValidation extends TestBase {
 			reportlog("Login completed Unsucessfull", "FAIL", "Login");
 		}
 
-		dashbrd.upcomingClassesInfoValidation();
-		reportlog("Highlights in Upcoming classes is displaying successfully", "PASS", "upcomingClassesInfoValidation");
+		if(dashbrd.upcomingClassesInfoValidation()) {
+		reportlog("Highlights in Upcoming classes are displaying successfully", "PASS", "upcomingClassesInfoValidation");
+		}
+		else {
+			reportlog("Highlights in Upcoming classes are not displaying", "FAIL", "Failed-Upcoming Class Info");
+		}
+			
 	}
 
 	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
@@ -359,6 +367,10 @@ public class DashboardValidation extends TestBase {
 		} else {
 			reportlog("Login completed Unsucessfull", "FAIL", "Login");
 		}
+		
+		homepg.clickhamburgericon();
+		app_leftnavigation("Accounting;Reports");
+		
 		if (invoicepg.validateIncorrectInvDateRangeSelection()) {
 			reportlog("Expected Warning message is displayed", "PASS", "Expected Warning");
 		} else {

@@ -58,7 +58,7 @@ public class E2E_AccountingSection extends TestBase {
 		signInPg = new SignInPage(BrowserFactory.getInstance().getDriver());
 		dashboardpg = new DashboardPage(BrowserFactory.getInstance().getDriver());
 		accountingPg = new AccountingPage(BrowserFactory.getInstance().getDriver());
-		homepg= new HomePage(BrowserFactory.getInstance().getDriver());
+		homepg = new HomePage(BrowserFactory.getInstance().getDriver());
 		System.out.println("current thread:" + Thread.currentThread().getId() + "driver intance"
 				+ BrowserFactory.getInstance().getDriver());
 		System.out.println("Test name: " + method.getName());
@@ -95,9 +95,9 @@ public class E2E_AccountingSection extends TestBase {
 		homepg.clickhamburgericon();
 		app_leftnavigation("Accounting;Create Invoice");
 		accountingPg.createInvoice();
-		System.out.println("Created Invoice");
+		reportlog("Created Invoice", "PASS", "Created Invoice");
 		accountingPg.validateInvID();
-		System.out.println("Invoice no validated successfully");
+		reportlog("Invoice no validated successfully", "PASS", "Invoice number validated");
 	}
 
 	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
@@ -133,8 +133,48 @@ public class E2E_AccountingSection extends TestBase {
 		accountingPg.clickOnInvNum();
 		reportlog("Clicked on Invoice number", "PASS", "Report page- invoice num");
 		accountingPg.validateInvoiceViewPage();
-		reportlog("Compared the headers","PASS","Compared successfully");
-		
+		reportlog("Compared the headers", "PASS", "Compared successfully");
+
+	}
+
+	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
+	public void TC_Accounting_ValidateStudentNotSelectedWarningMsg(Map<String, String> data) throws Throwable {
+		String testname = data.get("TestName");
+		String emailId = data.get("Email");
+		String password = data.get("Password");
+		String experrormsg = data.get("Expected_Error");
+
+		if (testname == null) {
+			return;
+		}
+		extenttestinitialize(testname);
+		signInPg.clicksigninlink();
+		String signinurl = signInPg.getcurrentURL();
+		if (signinurl.equalsIgnoreCase(signInPg.getexpectedsigninurl())) {
+			reportlog("navigated to signin page successfully", "INFO");
+		} else {
+			reportlog(
+					"failed to navigate sign in page. expected url is not matching:" + signInPg.getexpectedsigninurl(),
+					"FAIL", "Signin navigation");
+		}
+		signInPg.enterusername(emailId);
+		signInPg.enterpassword(password);
+		signInPg.clickloginbutton();
+		if (signInPg.checkhomepage()) {
+			reportlog("Login completed sucessfully", "PASS", "Login");
+		} else {
+			reportlog("Login completed Unsucessfull", "FAIL", "Login");
+		}
+		homepg.clickhamburgericon();
+		app_leftnavigation("Accounting;Create Invoice");
+		reportlog("Clicked on Create Invoice","PASS","create inv clecked");
+		accountingPg.clickOnSaveInv();
+		if (accountingPg.checkStudentNotSelectedWarning(experrormsg)) {
+			reportlog("Expected error displayed", "PASS", "Error displayed when student field is empty");
+		} else {
+			reportlog("Expected error not displayed", "FAIL", "Error displayed when student field is empty");
+		}
+
 	}
 
 	@AfterMethod

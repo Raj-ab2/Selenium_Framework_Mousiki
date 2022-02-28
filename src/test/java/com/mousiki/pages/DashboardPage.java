@@ -89,10 +89,8 @@ public class DashboardPage extends TestBase {
 
 	}
 
-	public void upcomingClassesInfoValidation() {
-		List<WebElement> allText = driver.findElements(tch_UC_FullInfo_Xpath);
-		String actualBubbleTexts = allText.get(allText.size() - 1).getText();
-		System.out.println(actualBubbleTexts);
+	public boolean upcomingClassesInfoValidation() {
+		return checkelementexists(driver, 10, tch_UC_FullInfo_Xpath);
 	}
 
 	public void clickOnInvoice() throws IOException {
