@@ -20,7 +20,8 @@ public class AccountingPage extends TestBase {
 	// List of all WebElements in Accounting Page
 	public By studentDD_Xpath = By.xpath("//div[contains(@class,'css-1hwfws3')]/div[contains(.,'Student Name')]");
 	public By availableCourseCheckbx_Xpath = By.xpath("//label[contains(@class,'form-check-label')]");
-	public By invSave_Xpath = By.xpath("//button[contains(.,'Save')and contains(@class,'btn ml-0 btn-primary')]");
+	public By invSave_Xpath = By.xpath("//div[@class='form-group form__group']/button[text()=\"Save\"]");
+			//("//button[contains(.,'Save')and contains(@class,'btn ml-0 btn-primary')]");
 	public By invCreatedMsg = By.xpath("//h2[contains(@class,'page-heading-title new-invoice')]");
 	public By reportsLabel_Xpath = By.xpath("//span[contains(.,'Reports')]");
 	public By invNoInReports_Xpath = By.xpath(
@@ -64,18 +65,13 @@ public class AccountingPage extends TestBase {
 		if (checkelementexists(driver, 0, studentDD_Xpath)) {
 			driver.findElement(
 					By.xpath("//div[contains(@class,'multiselect-option')]/div[contains(.,'TestStudent QA')]")).click();
-			// reportlog("Selected student", "PASS", strStudentDDTxt);
-			/*
-			 * driver.findElement(ddValue_Xpath).sendKeys(Keys.ARROW_DOWN);
-			 * driver.findElement(ddValue_Xpath).sendKeys(Keys.ENTER);
-			 */
 			reportlog("Selected student", "PASS", strStudentDDTxt);
 			waitForLoad(driver);
 			click(driver, availableCourseCheckbx_Xpath, strCourseCheckbx);
 
 			reportlog("Selected course", "PASS", strCourseCheckbx);
-			click(driver, invSave_Xpath, strSaveBtn);
-
+			// click(driver, invSave_Xpath, strSaveBtn);
+			driver.findElement(invSave_Xpath).getAttribute("innerHTML");
 			reportlog("Clicked Save", "PASS", strSaveBtn);
 		} else {
 			reportlog("Invoice failed to create", "FAIL", "Invoice failed to create");
@@ -129,19 +125,21 @@ public class AccountingPage extends TestBase {
 		}
 		return false;
 	}
-	
+
 	public boolean clickOnSaveInv() throws IOException, InterruptedException {
-		
-		if(checkelementexists(driver, 5, invSave_Xpath)) {
+
+		if (checkelementexists(driver, 5, invSave_Xpath)) {
+			//click(driver, invSave_Xpath, strSaveBtn);
+			System.out.println(driver.findElement(invSave_Xpath).getAttribute("innerHTML"));
+			Thread.sleep(10000);
 			click(driver, invSave_Xpath, strSaveBtn);
 			reportlog("Clicked On Save button", "PASS", "Clicked on Save");
 			return true;
-		}
-		else {
+		} else {
 			reportlog("Failed to click Save button", "FAIL", "Failed to click Save");
 		}
 		return false;
-		
+
 	}
 
 	public void validateInvoiceViewPage() throws InterruptedException, IOException {
