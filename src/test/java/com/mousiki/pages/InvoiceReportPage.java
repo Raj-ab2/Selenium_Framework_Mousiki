@@ -122,7 +122,7 @@ public class InvoiceReportPage extends TestBase {
 
 	}
 
-	public boolean validateIncorrectInvDateRangeSelection() throws IOException {
+	public boolean validateIncorrectInvDateRangeSelection(String fromDate, String incorrectDateWarning) throws IOException {
 		// click(driver, fromDateCalInv_Xpath, strExpInvDateText);
 		entertext(driver, fromDateCalInv_Xpath, fromDate, strCalDateSelected);
 		waitForLoad(driver);
@@ -130,7 +130,7 @@ public class InvoiceReportPage extends TestBase {
 		driver.findElement(By.xpath("(//button[normalize-space()='Run Report'])[1]")).click();
 		reportlog("RunReport clicked successfully","PASS","Clicked RunReport");
 		String strActualWarning = getelementtext(driver, incorrectDateWarning_Xpath, strIncorrectDateRangeWarn);
-		if (strActualWarning.equalsIgnoreCase(strIncorrectDateWarnMsg)) {
+		if (strActualWarning.equalsIgnoreCase(incorrectDateWarning)) {
 			reportlog("Expected warning message displayed", "PASS", "Warning displayed");
 			return true;
 		} else {
