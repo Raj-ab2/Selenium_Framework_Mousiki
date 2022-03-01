@@ -346,6 +346,8 @@ public class DashboardValidation extends TestBase {
 		String testname = data.get("TestName");
 		String emailId = data.get("Email");
 		String password = data.get("Password");
+		String fromDate = data.get("FromDate");
+		String incorrectDateWarning = data.get("Warning_Msg");
 
 		if (testname == null) {
 			return;
@@ -371,7 +373,7 @@ public class DashboardValidation extends TestBase {
 		homepg.clickhamburgericon();
 		app_leftnavigation("Accounting;Reports");
 		
-		if (invoicepg.validateIncorrectInvDateRangeSelection()) {
+		if (invoicepg.validateIncorrectInvDateRangeSelection(fromDate,incorrectDateWarning)) {
 			reportlog("Expected Warning message is displayed", "PASS", "Expected Warning");
 		} else {
 			reportlog("Expected warning message is not displayed", "FAIL", "Not the expected warning");
