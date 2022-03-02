@@ -38,12 +38,15 @@ public class DashboardPage extends TestBase {
 	public static String tch_OpenInvoice_txt = "Open Invoice(s)";
 	public static String tch_OverdueInvoice_txt = "Overdue Invoice(s)";
 	public static String invoiceExpURL = "https://qa.mousiki.io/accounting/reports";
-	public  By accounting_Xpath=By.xpath("//a[@class='collapsible-header Ripple-parent arrow-r las leftnav__accounting']");
-	public By createInv_Xpath=By.xpath("//span[normalize-space()='Create Invoice']");
-	
-	//List of WebElements name
-	public String strAccountingTxt="Accounting Label";
-	public String strCreateInvTxt="Create Invoice Label";
+	public By accounting_Xpath = By
+			.xpath("//a[@class='collapsible-header Ripple-parent arrow-r las leftnav__accounting']");
+	public By createInv_Xpath = By.xpath("//span[normalize-space()='Create Invoice']");
+	public By studentEnrollment_Xpath = By.xpath("//div[@class='elegant-select-cont']/p[contains(.,'Enrollment')]");
+	public By EnrollmentField = By.xpath("//div[contains(@class,'css-e56m7-control')]");
+
+	// List of WebElements name
+	public String strAccountingTxt = "Accounting Label";
+	public String strCreateInvTxt = "Create Invoice Label";
 
 	public By invoiceColHeader_XPATH = By.xpath("//form[@name='contactForm']/./div[@class='sales-formtable-header'])");
 
@@ -60,21 +63,36 @@ public class DashboardPage extends TestBase {
 	}
 
 	public boolean dashboardValidation(String commonXpath, String sectionType) {
-		boolean bVal = false;
+
 		String replacedxpath = commonXpath.replace("%s", sectionType);
 		WebElement replacedXpath = driver.findElement(By.xpath(replacedxpath));
 		if (replacedXpath.isEnabled()) {
 			String actualtxt = driver.findElement(By.xpath(replacedxpath)).getText();
 			if (actualtxt.equalsIgnoreCase(sectionType)) {
 				System.out.println("Verified " + actualtxt + "section successfully");
-				bVal = true;
+				return true;
+			} else {
+				System.out.println("Section not displayed");
 			}
 		}
-		return bVal;
+		return false;
+	}
+
+	public boolean checkEnrollmentField() throws IOException {
+		if (checkelementexists(driver, 10, studentEnrollment_Xpath)) {
+			if (driver.findElement(EnrollmentField).isEnabled()) {
+				reportlog("Enrollment section is enabled", "PASS", "Enrollment visible");
+				return true;
+			} else {
+				reportlog("Enrollment section is not enabled", "FAIL", "Enrollment section not visible");
+			}
+
+		}
+		return false;
+
 	}
 
 	public boolean scrollAndValidate(String commonXpath, String sectionType) {
-		boolean bvalue = false;
 		String replacedxpath = commonXpath.replace("%s", sectionType);
 		WebElement replacedXpath = driver.findElement(By.xpath(replacedxpath));
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", replacedXpath);
@@ -83,10 +101,10 @@ public class DashboardPage extends TestBase {
 
 		if (replacedXpath.isDisplayed()) {
 			System.out.println("Verified " + sectionType + "section successfully");
-			bvalue = true;
+			return true;
 		} else
 			System.out.println("Unable to validate" + sectionType + "section");
-		return bvalue;
+		return false;
 
 	}
 
@@ -112,6 +130,6 @@ public class DashboardPage extends TestBase {
 		waitForLoad(driver);
 		click(driver, createInv_Xpath, strCreateInvTxt);
 		waitForLoad(driver);
-		
+
 	}
 }
