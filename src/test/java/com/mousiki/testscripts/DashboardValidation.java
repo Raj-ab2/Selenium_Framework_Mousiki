@@ -133,6 +133,84 @@ public class DashboardValidation extends TestBase {
 		}
 
 	}
+	
+	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
+	public void TC_dashboard_validation_student(Map<String, String> data) throws Throwable {
+
+		String testname = data.get("TestName");
+		String emailId = data.get("Email");
+		String password = data.get("Password");
+
+		if (testname == null) {
+			return;
+		}
+
+		extenttestinitialize(testname);
+
+		signin.clicksigninlink();
+		String signinurl = signin.getcurrentURL();
+		if (signinurl.equalsIgnoreCase(signin.getexpectedsigninurl())) {
+			reportlog("navigated to signin page successfully", "INFO");
+		} else {
+			reportlog("failed to navigate sign in page. expected url is not matching:" + signin.getexpectedsigninurl(),
+					"FAIL", "Signin navigation");
+		}
+		signin.enterusername(emailId);
+		signin.enterpassword(password);
+		signin.clickloginbutton();
+		if (signin.checkhomepage()) {
+			reportlog("Login completed sucessfully", "PASS", "Login");
+		} else {
+			reportlog("Login completed Unsucessfull", "FAIL", "Login");
+		}
+
+		if (dashbrd.dashboardValidation(DashboardPage.parent_common_xpath, DashboardPage.upcmngSecTxt)) {
+			reportlog("Upcoming Classes section validation successfull", "PASS", "Upcoming Classes section success");
+		} else {
+			reportlog("Upcoming Classes section validation unsuccessfull", "FAIL", "Upcoming Classes section failed");
+		}
+
+		if (dashbrd.dashboardValidation(DashboardPage.parent_common_xpath, DashboardPage.invoicetxt)) {
+			reportlog("Invoice section validation successfull", "PASS", "Invoice section success");
+		} else {
+			reportlog("Invoice section validation unsuccessfull", "FAIL", "Invoice section failed");
+		}
+
+		if (dashbrd.dashboardValidation(DashboardPage.parent_common_xpath, DashboardPage.classTrendstxt)) {
+			reportlog("Class Trends section validation successfull", "PASS", "Class Trends section success");
+		} else {
+			reportlog("Class Trends section validation unsuccessfull", "FAIL", "Class Trends section failed");
+		}
+
+		if (dashbrd.dashboardValidation(DashboardPage.parent_common_xpath, DashboardPage.notificationtxt)) {
+			reportlog("Notification section validation successfull", "PASS",
+					"Notification section success");
+		} else {
+			reportlog("Notification section validation unsuccessfull", "FAIL",
+					"Notification section failed");
+		}
+
+		if (dashbrd.dashboardValidation(DashboardPage.parent_common_xpath, DashboardPage.parentPerftxt)) {
+			reportlog("performance section validation successfull", "PASS",
+					"performance section success");
+		} else {
+			reportlog("performance section validation unsuccessfull", "FAIL",
+					"performance section failed");
+		}
+		
+		if (dashbrd.dashboardValidation(DashboardPage.parent_common_xpath, DashboardPage.tch_Attendance_txt)) {
+			reportlog("Attendance section validation successfull", "PASS", "Attendance section success");
+		} else {
+			reportlog("Attendance section validation unsuccessfull", "FAIL", "Attendance section failed");
+		}
+		
+		if (dashbrd.scrollAndValidate(DashboardPage.tch_attendancecomm_Xpath, DashboardPage.tch_Enrollment_txt)) {
+			reportlog("Enrollment drop down is enabled", "PASS", "Enrollment field validation is success");
+		} else {
+			reportlog("Enrollment drop down is not enabled", "FAIL", "Enrollment field validation is unsuccessfull");
+		}
+
+	}
 
 	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
 	public void TC_dashboard_validation_teacher(Map<String, String> data) throws Throwable {
