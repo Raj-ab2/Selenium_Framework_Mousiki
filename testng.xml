@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Regress" data-provider-thread-count="1">
-  <test name="Registration">
-  	  <classes>
-      <class name="com.mousiki.testscripts.Register"/>
-      </classes>
-  </test> <!-- Test --> 
-  <test name="Login">
-  	  <classes>
-      <class name="com.mousiki.testscripts.Login"/>
-      </classes>
-  </test> <!-- Test --> 
-  <test name="MyAccount">
-  	  <classes>
-      <class name="com.mousiki.testscripts.MyAccount"/>
-      </classes>
-  </test> <!-- Test --> 
+	<test name="Registration">
+		<classes>
+			<class name="com.mousiki.testscripts.Register" />
+		</classes>
+	</test> <!-- Test -->
+	<test name="Accounting">
+		<classes>
+			<class name="com.mousiki.testscripts.E2E_AccountingSection" />
+		</classes>
+	</test>
+	<test name="Dashboard">
+		<classes>
+			<class name="com.mousiki.testscripts.DashboardValidation" />
+		</classes>
+	</test>
+	<test name="Login">
+		<classes>
+			<class name="com.mousiki.testscripts.Login" />
+		</classes>
+	</test> <!-- Test -->
+	<test name="MyAccount">
+		<classes>
+			<class name="com.mousiki.testscripts.MyAccount" />
+		</classes>
+	</test> <!-- Test -->
 </suite> <!-- Suite --> 
