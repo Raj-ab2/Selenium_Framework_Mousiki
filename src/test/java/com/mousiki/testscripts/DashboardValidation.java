@@ -420,7 +420,7 @@ public class DashboardValidation extends TestBase {
 	}
 
 	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
-	public void TC_Dashboard_NegFlow_ValidateWarningInIncorrectDate(Map<String, String> data) throws IOException {
+	public void TC_Dashboard_NegFlow_ValidateWarningInIncorrectDate(Map<String, String> data) throws IOException, InterruptedException {
 		String testname = data.get("TestName");
 		String emailId = data.get("Email");
 		String password = data.get("Password");

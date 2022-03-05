@@ -16,6 +16,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -361,6 +362,27 @@ public class TestBase {
 
 		int randomNum = rand.nextInt((max - min) + 1) + min;
 		return randomNum;
+	}
+	
+	public String randomNumForDate() {
+		Random random = new Random();
+		int randValue=random.nextInt(10);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, randValue);
+		cal.add(Calendar.MONTH, 1);
+		cal.add(Calendar.YEAR, 1);
+		
+		Date date=cal.getTime();
+		System.out.println("Date is"+date);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("D/MM/YYYY");
+		String dateString = dateFormat.format(date);
+		
+		System.out.println("Formatted Date:"+dateString);
+		
+		return dateString;
+		
 	}
 	
 	/**

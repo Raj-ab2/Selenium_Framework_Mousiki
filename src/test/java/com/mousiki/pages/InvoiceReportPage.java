@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -42,7 +43,8 @@ public class InvoiceReportPage extends TestBase {
 	public By summaryOverDueInv = By
 			.xpath("//div[@class='summary-info summary-info__due']//p[@class='summary-invoice__amt']");
 
-	public By fromDateCalInv_Xpath = By.xpath("(//input[@name='fromDate' and @placeholder='D/M/YYYY'])[1]");
+	public By fromDateCalInv_Xpath = By.cssSelector("input[class='react-datepicker-ignore-onclickoutside']");
+			//By.xpath("(//input[@name='fromDate' and @placeholder='D/M/YYYY'])[1]");
 	public By incorrectDateWarning_Xpath = By.xpath("//div[normalize-space()='The end date should be greater than to start date']");
 	public By runReport_Xpath = By.xpath("(//button[normalize-space()='Run Report'])[1]");
 	public By calDatepicker_Xpath = By.xpath(
@@ -121,13 +123,11 @@ public class InvoiceReportPage extends TestBase {
 		return false;
 
 	}
-
+	
 	public boolean validateIncorrectInvDateRangeSelection(String fromDate, String incorrectDateWarning) throws IOException {
-		// click(driver, fromDateCalInv_Xpath, strExpInvDateText);
+		String calDate=randomNumForDate();
 		entertext(driver, fromDateCalInv_Xpath, fromDate, strCalDateSelected);
 		waitForLoad(driver);
-		//click(driver, runReport_Xpath, strRunReportText);
-		driver.findElement(By.xpath("(//button[normalize-space()='Run Report'])[1]")).click();
 		reportlog("RunReport clicked successfully","PASS","Clicked RunReport");
 		String strActualWarning = getelementtext(driver, incorrectDateWarning_Xpath, strIncorrectDateRangeWarn);
 		if (strActualWarning.equalsIgnoreCase(incorrectDateWarning)) {
