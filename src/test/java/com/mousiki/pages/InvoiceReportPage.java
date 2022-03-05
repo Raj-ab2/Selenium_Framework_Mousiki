@@ -162,9 +162,9 @@ public class InvoiceReportPage extends TestBase {
 	}
 
 	public boolean clickOnReceivePayment() throws IOException, InterruptedException {
-		Thread.sleep(10000);
+		waitForLoad(driver);
 		if (checkelementexists(driver, 0, invReceivePaymentDD)) {
-			Thread.sleep(10000);
+			waitForLoad(driver);
 			click(driver, invReceivePaymentDD, fromDate);
 			waitForLoad(driver);
 			System.out.println("Clicked on receive payment");
@@ -176,9 +176,9 @@ public class InvoiceReportPage extends TestBase {
 	}
 
 	public boolean clickOnReceivePaymentinPopUp() throws IOException, InterruptedException {
-		Thread.sleep(10000);
+		waitForLoad(driver);
 		if (checkelementexists(driver, 0, receivePayment_btn)) {
-			Thread.sleep(10000);
+			waitForLoad(driver);
 			click(driver, receivePayment_btn, strReceivePayment);
 			return true;
 		} else {
@@ -187,7 +187,7 @@ public class InvoiceReportPage extends TestBase {
 	}
 	
 	public boolean checkInvoiceStatusAfterPayment(String expectedInvStatus) throws IOException, InterruptedException {
-		Thread.sleep(10000);
+		waitForLoad(driver);
 		if(checkelementexists(driver, 0, statusAfterPayment_xpath)) {
 			String actualInvStatus=getelementtext(driver, statusAfterPayment_xpath, strInvStatusAfterPayment);
 			if(actualInvStatus.equalsIgnoreCase(expectedInvStatus)) {
