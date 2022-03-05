@@ -56,7 +56,7 @@ public class AccountingPage extends TestBase {
 		this.driver = driver;
 	}
 
-	public void createInvoice() throws IOException, InterruptedException {
+	public boolean createInvoice() throws IOException, InterruptedException {
 		// click(driver, studentDD_Xpath, strStudentDDTxt);
 		driver.findElement(
 				By.xpath("//div[contains(.,'Student Name') and contains(@class,' css-1wa3eu0-placeholder')]")).click();
@@ -73,8 +73,10 @@ public class AccountingPage extends TestBase {
 			// click(driver, invSave_Xpath, strSaveBtn);
 			driver.findElement(invSave_Xpath).getAttribute("innerHTML");
 			reportlog("Clicked Save", "PASS", strSaveBtn);
+			return true;
 		} else {
 			reportlog("Invoice failed to create", "FAIL", "Invoice failed to create");
+			return false;
 		}
 	}
 
