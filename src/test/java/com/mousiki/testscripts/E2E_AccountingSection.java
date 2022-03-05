@@ -29,6 +29,7 @@ public class E2E_AccountingSection extends TestBase {
 	AccountingPage accountingPg;
 	SignInPage signInPg;
 	HomePage homepg;
+	InvoiceReportPage invoicePg;
 
 	@BeforeClass
 	public void setup() throws IOException {
@@ -59,6 +60,7 @@ public class E2E_AccountingSection extends TestBase {
 		dashboardpg = new DashboardPage(BrowserFactory.getInstance().getDriver());
 		accountingPg = new AccountingPage(BrowserFactory.getInstance().getDriver());
 		homepg = new HomePage(BrowserFactory.getInstance().getDriver());
+		invoicePg = new InvoiceReportPage(BrowserFactory.getInstance().getDriver());
 		System.out.println("current thread:" + Thread.currentThread().getId() + "driver intance"
 				+ BrowserFactory.getInstance().getDriver());
 		System.out.println("Test name: " + method.getName());
@@ -96,8 +98,10 @@ public class E2E_AccountingSection extends TestBase {
 		app_leftnavigation("Accounting;Create Invoice");
 		accountingPg.createInvoice();
 		reportlog("Created Invoice", "PASS", "Created Invoice");
-		accountingPg.validateInvID();
-		reportlog("Invoice no validated successfully", "PASS", "Invoice number validated");
+		/*
+		 * accountingPg.validateInvID(); reportlog("Invoice no validated successfully",
+		 * "PASS", "Invoice number validated");
+		 */
 	}
 
 	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
@@ -167,12 +171,67 @@ public class E2E_AccountingSection extends TestBase {
 		}
 		homepg.clickhamburgericon();
 		app_leftnavigation("Accounting;Create Invoice");
-		reportlog("Clicked on Create Invoice","PASS","create inv clecked");
+		reportlog("Clicked on Create Invoice", "PASS", "create inv clecked");
 		accountingPg.clickOnSaveInv();
 		if (accountingPg.checkStudentNotSelectedWarning(experrormsg)) {
 			reportlog("Expected error displayed", "PASS", "Error displayed when student field is empty");
 		} else {
 			reportlog("Expected error not displayed", "FAIL", "Error displayed when student field is empty");
+		}
+
+	}
+
+	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
+	public void TC_Accounting_ReceivePayment(Map<String, String> data) throws Throwable {
+		String testname = data.get("TestName");
+		String emailId = data.get("Email");
+		String password = data.get("Password");
+		String expectedInvStatus = data.get("Expected_Inv_Status");
+
+		if (testname == null) {
+			return;
+		}
+		extenttestinitialize(testname);
+		signInPg.clicksigninlink();
+		String signinurl = signInPg.getcurrentURL();
+		if (signinurl.equalsIgnoreCase(signInPg.getexpectedsigninurl())) {
+			reportlog("navigated to signin page successfully", "INFO");
+		} else {
+			reportlog(
+					"failed to navigate sign in page. expected url is not matching:" + signInPg.getexpectedsigninurl(),
+					"FAIL", "Signin navigation");
+		}
+		signInPg.enterusername(emailId);
+		signInPg.enterpassword(password);
+		signInPg.clickloginbutton();
+		if (signInPg.checkhomepage()) {
+			reportlog("Login completed sucessfully", "PASS", "Login");
+		} else {
+			reportlog("Login completed Unsucessfull", "FAIL", "Login");
+		}
+		homepg.clickhamburgericon();
+		app_leftnavigation("Accounting;Reports");
+		if (invoicePg.clickOnInvNumber()) {
+			reportlog("Clicked on Invoice number", "PASS", "Clicked on Invoice number");
+		} else {
+			reportlog("Failed to click on Invoice number", "FAIL", "Failed to click on Invoice number");
+		}
+		if (invoicePg.clickOnReceivePayment()) {
+			reportlog("Clicked on Receive Payment Drop down", "PASS", "Clicked Receive payment");
+		} else {
+			reportlog("Failed to click on Receive Payment Drop down", "FAIL", "Failed to click Receive payment");
+		}
+
+		if (invoicePg.clickOnReceivePaymentinPopUp()) {
+			reportlog("Clicked on Receive Payment button", "PASS", "Clicked Receive payment button");
+		} else {
+			reportlog("Failed to click on Receive Payment button", "FAIL", "Failed to click Receive payment button");
+		}
+		
+		if(invoicePg.checkInvoiceStatusAfterPayment(expectedInvStatus)) {
+			reportlog("Expected Invoice status displayed", "PASS", "Invoice status displayed as expected");
+		} else {
+			reportlog("Expected Invoice status did not display", "FAIL", "Status did not display as exepcted");
 		}
 
 	}
