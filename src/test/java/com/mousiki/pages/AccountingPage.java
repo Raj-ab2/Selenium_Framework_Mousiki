@@ -8,6 +8,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.mousiki.testbase.TestBase;
@@ -21,7 +22,7 @@ public class AccountingPage extends TestBase {
 	public By studentDD_Xpath = By.xpath("//div[contains(@class,'css-1hwfws3')]/div[contains(.,'Student Name')]");
 	public By availableCourseCheckbx_Xpath = By.xpath("//label[contains(@class,'form-check-label')]");
 	public By invSave_Xpath = By.xpath("//div[@class='form-group form__group']/button[text()=\"Save\"]");
-			//("//button[contains(.,'Save')and contains(@class,'btn ml-0 btn-primary')]");
+	// ("//button[contains(.,'Save')and contains(@class,'btn ml-0 btn-primary')]");
 	public By invCreatedMsg = By.xpath("//h2[contains(@class,'page-heading-title new-invoice')]");
 	public By reportsLabel_Xpath = By.xpath("//span[contains(.,'Reports')]");
 	public By invNoInReports_Xpath = By.xpath(
@@ -36,6 +37,11 @@ public class AccountingPage extends TestBase {
 	public By reports_Xpath = By.xpath("//span[normalize-space()='Reports']");
 	public By reportHeaderList_Xpath = By.xpath("//table[contains(@class,'template_tbl')]/thead/tr/td");
 	public By studentNotSelected_Xpath = By.xpath("//div[normalize-space()='Please select student']");
+
+	// Latest List of XPATHs
+	public By studentDD = By.xpath("//div[contains(text(),'Student Name')]");
+	public By selectStudentFromDD = By.xpath("//div[contains(@class,'multiselect-option')]");
+	public By saveBtn_Xpath = By.xpath("//div[@class='form-group form__group']/button[text()='Save']");
 
 	// List of all Strings to compare or enter in text field
 	public String strStudentName = "TestStudent QA";
@@ -56,28 +62,44 @@ public class AccountingPage extends TestBase {
 		this.driver = driver;
 	}
 
-	public boolean createInvoice() throws IOException, InterruptedException {
-		// click(driver, studentDD_Xpath, strStudentDDTxt);
-		driver.findElement(
-				By.xpath("//div[contains(.,'Student Name') and contains(@class,' css-1wa3eu0-placeholder')]")).click();
-		Thread.sleep(10000);
-		reportlog("Clicked DD", "PASS", strStudentDDTxt);
-		if (checkelementexists(driver, 0, studentDD_Xpath)) {
-			driver.findElement(
-					By.xpath("//div[contains(@class,'multiselect-option')]/div[contains(.,'TestStudent QA')]")).click();
-			reportlog("Selected student", "PASS", strStudentDDTxt);
-			waitForLoad(driver);
-			click(driver, availableCourseCheckbx_Xpath, strCourseCheckbx);
-
-			reportlog("Selected course", "PASS", strCourseCheckbx);
-			// click(driver, invSave_Xpath, strSaveBtn);
-			driver.findElement(invSave_Xpath).getAttribute("innerHTML");
-			reportlog("Clicked Save", "PASS", strSaveBtn);
+	public boolean clickStudentName() throws IOException {
+		if (checkelementexists(driver, 10, studentDD)) {
+			click(driver, studentDD, strStudentName);
 			return true;
-		} else {
-			reportlog("Invoice failed to create", "FAIL", "Invoice failed to create");
+		} else
 			return false;
+	}
+
+	public boolean selectStudentFromDD() throws IOException {
+		if (checkelementexists(driver, 20, selectStudentFromDD)) {
+			click(driver, selectStudentFromDD, strStudentName);
+			return true;
+		} else
+			return false;
+	}
+
+	public boolean selectAvailableCourse() throws IOException {
+		if (checkelementexists(driver, 20, availableCourseCheckbx_Xpath)) {
+			click(driver, availableCourseCheckbx_Xpath, strCourseCheckbx);
+			return true;
+		} else
+			return false;
+	}
+
+	public boolean clickOnSave() throws IOException, InterruptedException {
+		waitForLoad(driver);
+		boolean returnval = false;
+		for (int iteration = 0; iteration < 3; iteration++) {
+			if (checkelementexists(driver, 20, saveBtn_Xpath)) {
+				Actions mouseOver = new Actions(driver);
+				mouseOver.moveToElement(driver.findElement(saveBtn_Xpath)).click().perform();
+				returnval = true;
+				break;
+			} else
+				returnval = false;
 		}
+		Thread.sleep(5000);
+		return returnval;
 	}
 
 	public void validateInvID() throws IOException, InterruptedException {
@@ -131,7 +153,7 @@ public class AccountingPage extends TestBase {
 	public boolean clickOnSaveInv() throws IOException, InterruptedException {
 
 		if (checkelementexists(driver, 5, invSave_Xpath)) {
-			//click(driver, invSave_Xpath, strSaveBtn);
+			// click(driver, invSave_Xpath, strSaveBtn);
 			System.out.println(driver.findElement(invSave_Xpath).getAttribute("innerHTML"));
 			Thread.sleep(10000);
 			click(driver, invSave_Xpath, strSaveBtn);

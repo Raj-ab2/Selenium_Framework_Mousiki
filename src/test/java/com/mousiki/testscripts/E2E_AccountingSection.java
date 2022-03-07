@@ -96,12 +96,30 @@ public class E2E_AccountingSection extends TestBase {
 
 		homepg.clickhamburgericon();
 		app_leftnavigation("Accounting;Create Invoice");
-		accountingPg.createInvoice();
-		reportlog("Created Invoice", "PASS", "Created Invoice");
-		/*
-		 * accountingPg.validateInvID(); reportlog("Invoice no validated successfully",
-		 * "PASS", "Invoice number validated");
-		 */
+		if (accountingPg.clickStudentName()) {
+			reportlog("Clicked on Student Name drop down", "PASS", "Student NAme clicked");
+		} else {
+			reportlog("Failed to clicked on Student Name drop down", "FAIL", "Failed to click student name");
+		}
+
+		if (accountingPg.selectStudentFromDD()) {
+			reportlog("Selected Student from drop down", "PASS", "Student selected from DD");
+		} else {
+			reportlog("Failed to select Student Name from drop down", "FAIL", "Failed to select student DD");
+		}
+
+		if (accountingPg.selectAvailableCourse()) {
+			reportlog("Selected course successfully", "PASS", "Course selected as expected");
+		} else {
+			reportlog("Failed to select course", "FAIL", "Failed to select course");
+		}
+
+		if (accountingPg.clickOnSave()) {
+			reportlog("Clicked on Save", "PASS", "Save clicked");
+		} else {
+			reportlog("Failed to click on save", "FAIL", "Failed to click save");
+		}
+
 	}
 
 	@Test(dataProviderClass = TestCaseData.class, dataProvider = "testdata")
@@ -186,7 +204,7 @@ public class E2E_AccountingSection extends TestBase {
 		String testname = data.get("TestName");
 		String emailId = data.get("Email");
 		String password = data.get("Password");
-		String expectedInvStatus = data.get("Expected_Inv_Status");
+		String expectedInvStatus = data.get("Expected_Error");
 
 		if (testname == null) {
 			return;
@@ -227,8 +245,8 @@ public class E2E_AccountingSection extends TestBase {
 		} else {
 			reportlog("Failed to click on Receive Payment button", "FAIL", "Failed to click Receive payment button");
 		}
-		
-		if(invoicePg.checkInvoiceStatusAfterPayment(expectedInvStatus)) {
+
+		if (invoicePg.checkInvoiceStatusAfterPayment(expectedInvStatus)) {
 			reportlog("Expected Invoice status displayed", "PASS", "Invoice status displayed as expected");
 		} else {
 			reportlog("Expected Invoice status did not display", "FAIL", "Status did not display as exepcted");
