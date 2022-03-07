@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -43,8 +44,9 @@ public class InvoiceReportPage extends TestBase {
 	public By summaryOverDueInv = By
 			.xpath("//div[@class='summary-info summary-info__due']//p[@class='summary-invoice__amt']");
 
-	public By fromDateCalInv_Xpath = By.cssSelector("input[class='react-datepicker-ignore-onclickoutside']");
-	// By.xpath("(//input[@name='fromDate' and @placeholder='D/M/YYYY'])[1]");
+	public By fromDateCalInv_Xpath = By.xpath("(//input[@name='fromDate' and @placeholder='D/M/YYYY'])[1]");
+			//By.cssSelector("input[class='react-datepicker-ignore-onclickoutside']");
+	
 	public By incorrectDateWarning_Xpath = By
 			.xpath("//div[normalize-space()='The end date should be greater than to start date']");
 	public By runReport_Xpath = By.xpath("(//button[normalize-space()='Run Report'])[1]");
@@ -55,7 +57,7 @@ public class InvoiceReportPage extends TestBase {
 	public By invReceivePaymentDD = By
 			.xpath("//div[@class='mou-custom-dropdown__selected' and text()='Receive Payment']");
 	public By receivePayment_btn = By.xpath("//button[@class='btn  ml-0 btn-primary' and text()='Receive Payment']");
-	public By statusAfterPayment_xpath=By.xpath("//div[@class='view_inv_details__value view_inv_details--status' and text()='Paid']");
+	public By statusAfterPayment_xpath = By.xpath("//div[contains(@class,'view_inv_details--status')]");
 
 	// All partial xpath strings to be used on replacing
 	public String strInvDate_Xpath_Text = "date sales-header__has-sort";
@@ -80,7 +82,7 @@ public class InvoiceReportPage extends TestBase {
 	public String strIncorrectDateRangeWarn = "Warning Message";
 	public String strCalDateSelected = "Selected Calendar date";
 	public String strReceivePayment = "Receive Payment";
-	public String strInvStatusAfterPayment="Inv status";
+	public String strInvStatusAfterPayment = "Inv status";
 
 	public String[] strExpHeaderList = { "Date", "Invoice No", "Customer", "Amount", "Balance", "Status", "Due Date" };
 	public String strIncorrectDateWarnMsg = "The end date should be greater than to start date";
@@ -130,10 +132,17 @@ public class InvoiceReportPage extends TestBase {
 		return false;
 
 	}
+	
+	public void clickOnFromDateAndClear() {
+		driver.findElement(fromDateCalInv_Xpath).clear();
+	}
+	
+	public void enterFutureDate(String fromDate) throws IOException {
+		sendtext(driver, fromDateCalInv_Xpath, fromDate,"From Date" );
+	}
 
 	public boolean validateIncorrectInvDateRangeSelection(String fromDate, String incorrectDateWarning)
 			throws IOException {
-		// String calDate=randomNumForDate();
 		entertext(driver, fromDateCalInv_Xpath, fromDate, strCalDateSelected);
 		waitForLoad(driver);
 		reportlog("RunReport clicked successfully", "PASS", "Clicked RunReport");
@@ -145,6 +154,27 @@ public class InvoiceReportPage extends TestBase {
 			reportlog("Expected warning message not displayed", "FAIL", "No Warning displayed");
 		}
 		return false;
+	}
+
+	public boolean checkIncorrectDate(String fromDate) {
+	boolean returnVal=false;
+		for (int iteration = 0; iteration < 3; iteration ++) {
+			if (checkelementexists(driver, 20, fromDateCalInv_Xpath)) {
+				WebElement ele = driver.findElement(fromDateCalInv_Xpath);
+				ele.clear();
+				waitForLoad(driver);
+				ele.sendKeys(Keys.CONTROL + "a");
+				ele.sendKeys(Keys.DELETE);
+				waitForLoad(driver);
+				ele.click();
+				waitForLoad(driver);
+				ele.sendKeys(fromDate);
+				returnVal= true;
+				break;
+			} else
+				returnVal= false;
+		}
+		return returnVal;
 	}
 
 	public boolean clickOnInvNumber() throws IOException, InterruptedException {
@@ -162,10 +192,10 @@ public class InvoiceReportPage extends TestBase {
 	}
 
 	public boolean clickOnReceivePayment() throws IOException, InterruptedException {
-		waitForLoad(driver);
-		if (checkelementexists(driver, 0, invReceivePaymentDD)) {
+		Thread.sleep(10000);
+		if (checkelementexists(driver, 20, invReceivePaymentDD)) {
 			waitForLoad(driver);
-			click(driver, invReceivePaymentDD, fromDate);
+			click(driver, invReceivePaymentDD, strReceivePayment);
 			waitForLoad(driver);
 			System.out.println("Clicked on receive payment");
 			return true;
@@ -176,8 +206,8 @@ public class InvoiceReportPage extends TestBase {
 	}
 
 	public boolean clickOnReceivePaymentinPopUp() throws IOException, InterruptedException {
-		waitForLoad(driver);
-		if (checkelementexists(driver, 0, receivePayment_btn)) {
+		Thread.sleep(10000);
+		if (checkelementexists(driver, 20, receivePayment_btn)) {
 			waitForLoad(driver);
 			click(driver, receivePayment_btn, strReceivePayment);
 			return true;
@@ -185,20 +215,27 @@ public class InvoiceReportPage extends TestBase {
 			return false;
 		}
 	}
-	
+
 	public boolean checkInvoiceStatusAfterPayment(String expectedInvStatus) throws IOException, InterruptedException {
 		waitForLoad(driver);
-		if(checkelementexists(driver, 0, statusAfterPayment_xpath)) {
-			String actualInvStatus=getelementtext(driver, statusAfterPayment_xpath, strInvStatusAfterPayment);
-			if(actualInvStatus.equalsIgnoreCase(expectedInvStatus)) {
-				System.out.println("Status after payment is:"+ actualInvStatus);
-				return true;
+		boolean returnval = false;
+		for (int iteration = 0; iteration < 3; iteration++) {
+			if (checkelementexists(driver, 20, statusAfterPayment_xpath)) {
+				String actualInvStatus = getelementtext(driver, statusAfterPayment_xpath, strInvStatusAfterPayment);
+				System.out.println(actualInvStatus + "is the text");
+				if (actualInvStatus.equalsIgnoreCase(expectedInvStatus)) {
+					System.out.println("Status after payment is:" + actualInvStatus);
+					System.out.println("expected status is:" + expectedInvStatus);
+					returnval = true;
+					break;
+				} else
+					System.out.println("Status after payment is not as expected:" + actualInvStatus);
+				System.out.println("expected status is:" + expectedInvStatus);
+				returnval = false;
 			}
-			else
-				System.out.println("Status after payment is:"+ actualInvStatus);
-				return false;
+			Thread.sleep(5000);
 		}
-		return false;
+		return returnval;
 	}
 
 }

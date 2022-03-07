@@ -451,11 +451,17 @@ public class DashboardValidation extends TestBase {
 		homepg.clickhamburgericon();
 		app_leftnavigation("Accounting;Reports");
 		
-		if (invoicepg.validateIncorrectInvDateRangeSelection(fromDate,incorrectDateWarning)) {
-			reportlog("Expected Warning message is displayed", "PASS", "Expected Warning");
-		} else {
-			reportlog("Expected warning message is not displayed", "FAIL", "Not the expected warning");
-		}
+		invoicepg.clickOnFromDateAndClear();
+		
+		invoicepg.enterFutureDate(fromDate);
+		
+		/*
+		 * if (invoicepg.validateIncorrectInvDateRangeSelection(fromDate,
+		 * incorrectDateWarning)) { reportlog("Expected Warning message is displayed",
+		 * "PASS", "Expected Warning"); } else {
+		 * reportlog("Expected warning message is not displayed", "FAIL",
+		 * "Not the expected warning"); }
+		 */
 	}
 
 	@AfterMethod
