@@ -299,21 +299,21 @@ public class Register extends TestBase {
 			firstloginpage.selectgender(gender);
 			firstloginpage.enterphonenumber(phoneno);
 			firstloginpage.enterdateofbirth(dateofbirth);
-			firstloginpage.uploadprofilepic("C:\\temp.jpg");
+//			firstloginpage.uploadprofilepic("C:\\temp.jpg");
 			firstloginpage.selectinstrument(instrument);
 		}else if(option.equalsIgnoreCase("STUDENT")) {
 			firstloginpage.selectusertype(option);
 			firstloginpage.selectgender(gender);
 			firstloginpage.enterphonenumber(phoneno);
 			firstloginpage.enterdateofbirth(dateofbirth);
-			firstloginpage.uploadprofilepic("C:\\temp.jpg");
+//			firstloginpage.uploadprofilepic("C:\\temp.jpg");
 			firstloginpage.selectinstrument(instrument);
 		}else if(option.equalsIgnoreCase("PARENT")) {
 			firstloginpage.selectusertype(option);
 			firstloginpage.selectgender(gender);
 			firstloginpage.enterdateofbirth(dateofbirth);
 			firstloginpage.enterphonenumber(phoneno);
-			firstloginpage.uploadprofilepic("C:\\temp.jpg");
+//			firstloginpage.uploadprofilepic("C:\\temp.jpg");
 		}else{
 			firstloginpage.selectgender(gender);
 			firstloginpage.enterphonenumber(phoneno);
