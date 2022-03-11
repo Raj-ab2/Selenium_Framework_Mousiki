@@ -832,6 +832,21 @@ public class TestBase {
 		signinpage.clickloginbutton();
 	}
 	
+	/**
+	 * generic application to handle different device dialog
+	 * @param emailid
+	 * @param password
+	 * @throws IOException
+	 */
+	public void handlerealtimenotifydialog() throws IOException {
+		HomePage homepage = new HomePage(BrowserFactory.getInstance().getDriver());
+		if(homepage.checkenablebutton()) {
+			System.out.println("enable button clicked successfully");
+			homepage.clickenablebutton();
+		}
+		System.out.println("enable button clicked successfully");
+	}
+	
 	public void app_leftnavigation(String menuitems) throws IOException {
 		HomePage homepage = new HomePage(BrowserFactory.getInstance().getDriver());
 		

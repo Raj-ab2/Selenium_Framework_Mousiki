@@ -102,6 +102,7 @@ public class MyAccount extends TestBase {
 
 		// Login application
 		app_Login(emailid, password);
+		handlerealtimenotifydialog();
 
 		if (homepage.checkhamburgericon()) {
 			reportlog("Application logged in successfully", "PASS", "Login");

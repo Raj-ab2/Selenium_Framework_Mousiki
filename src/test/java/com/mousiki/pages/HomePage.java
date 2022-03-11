@@ -23,6 +23,7 @@ public class HomePage extends TestBase {
 	By youtubelink = By.xpath("//ul[contains(@class, 'social')]/li[4]/a");
 	By linkinlink = By.xpath("//ul[contains(@class, 'social')]/li[5]/a");
 	By pinterestlink = By.xpath("//ul[contains(@class, 'social')]/li[6]/a");
+	By enablebtn = By.xpath("//button[contains(.,'Enable')]");
 	
 	//defining element names
 	String termsofuselinknm = "terms of use link";
@@ -36,6 +37,7 @@ public class HomePage extends TestBase {
 	String youtubelinknm = "Youtube link";
 	String linkinlinknm = "LinkedIn link";
 	String pinterestlinknm = "Pinterest link";
+	String enablebtnnm = "Enable button in dialog";
 	
 	public HomePage(WebDriver driver) {
 		this.driver = driver;
@@ -59,6 +61,14 @@ public class HomePage extends TestBase {
 	
 	public void clickhamburgericon() throws IOException{
 		click(driver, hamburgericon, hamburgericonnm);
+	}
+	
+	public void clickenablebutton() throws IOException{
+		click(driver, enablebtn, enablebtnnm);
+	}
+	
+	public boolean checkenablebutton() throws IOException{
+		return checkelementexists(driver, 5, enablebtn);
 	}
 	
 	public boolean checkmenulinkvisibility(String menuname) throws IOException{
